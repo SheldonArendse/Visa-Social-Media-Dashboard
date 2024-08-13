@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
@@ -29,7 +30,12 @@
                     <li class="mb-4"><a href="#" class="text-white">Create Post</a></li>
                     <li class="mb-4"><a href="#" class="text-white">Manage Posts</a></li>
                     <li class="mb-4"><a href="#" class="text-white">Social Media Integrations</a></li>
-                    <li class="mb-4"><a href="#" class="text-white">Logout</a></li>
+                    <li class="mb-4">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="text-white">Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </nav>
