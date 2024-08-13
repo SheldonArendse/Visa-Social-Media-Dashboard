@@ -44,4 +44,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // A user can have many social media integrations
+    public function socialMediaIntegrations()
+    {
+        return $this->hasMany(SocialMediaIntegration::class);
+    }
+
+    // A user can have many posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
