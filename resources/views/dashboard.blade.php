@@ -15,14 +15,13 @@
     <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl font-bold text-gray-900">
-                Dashboard
+                Visa Dashboard
             </h1>
         </div>
     </header>
 
-    <!-- Sidebar and Main Content -->
+    <!-- Sidebar Menu-->
     <div class="flex">
-        <!-- Sidebar -->
         <nav class="w-1/5 bg-gray-800 text-white h-screen">
             <div class="p-4">
                 <ul>
@@ -44,7 +43,7 @@
         <main class="w-4/5 p-8">
             <h2 class="text-2xl font-semibold mb-6">Create a New Post</h2>
 
-            <!-- Post Form -->
+            <!-- Create Post Form -->
             <form action="{{ route('posts.store') }}" method="POST">
                 @csrf
                 <div class="mb-4">
@@ -72,10 +71,13 @@
                     <div class="flex items-center">
                         <input type="checkbox" id="facebook" name="platforms[]" value="facebook" class="mr-2">
                         <label for="facebook" class="mr-4">Facebook</label>
+
                         <input type="checkbox" id="twitter" name="platforms[]" value="twitter" class="mr-2">
                         <label for="twitter" class="mr-4">Twitter</label>
+
                         <input type="checkbox" id="instagram" name="platforms[]" value="instagram" class="mr-2">
                         <label for="instagram" class="mr-4">Instagram</label>
+
                         <input type="checkbox" id="linkedin" name="platforms[]" value="linkedin" class="mr-2">
                         <label for="linkedin">LinkedIn</label>
                     </div>
@@ -90,7 +92,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white p-4 text-center">
-        &copy; 2024 Your Company
+        &copy; 2024 Visa Dashboard
     </footer>
 
 </body>
