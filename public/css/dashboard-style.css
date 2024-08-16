@@ -1,0 +1,77 @@
+:root {
+    --primary-color: #abac65;
+    --secondary-color: #6ca4a7;
+    --accent-color: #182e42;
+    --background-color: #f4f4f4;
+    --text-color: #333333;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color);
+}
+
+.bg-accent {
+    background-color: var(--accent-color);
+}
+
+.text-primary {
+    color: var(--primary-color);
+}
+
+.text-secondary {
+    color: var(--secondary-color);
+}
+
+.text-accent {
+    color: var(--accent-color);
+}
+
+.border-primary {
+    border-color: var(--primary-color);
+}
+
+.hover\:bg-primary-dark:hover {
+    background-color: #959766;
+}
+
+.dropzone {
+    border: 2px dashed var(--secondary-color);
+    border-radius: 5px;
+    background: white;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropzone .dz-message {
+    font-weight: 400;
+    text-align: center;
+}
+
+.dropzone .dz-preview .dz-image {
+    border-radius: 5px;
+}
+
+@media (max-width: 640px) {
+    .sidebar {
+        position: fixed;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}

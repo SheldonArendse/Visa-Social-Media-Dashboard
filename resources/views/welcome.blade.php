@@ -8,7 +8,6 @@
     <title>Visa Social Media</title>
     <link href="{{ asset('css/welcome-style.css') }}" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="{{ asset('images/sami-logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
