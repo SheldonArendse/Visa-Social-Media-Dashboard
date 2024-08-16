@@ -25,24 +25,30 @@
         <div class="p-4 bg-primary">
             <h1 class="text-accent text-xl font-bold">SA Migration</h1>
         </div>
-        <nav class="flex-1 pt-5 pb-4 overflow-y-auto">
-            <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
-                <i class="fas fa-tachometer-alt mr-3"></i>
-                Dashboard
-            </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
-                <i class="fas fa-newspaper mr-3"></i>
-                Articles
-            </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
-                <i class="fas fa-chart-line mr-3"></i>
-                Analytics
-            </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
-                <i class="fas fa-cog mr-3"></i>
-                Settings
-            </a>
-        </nav>
+        <div class="flex-1 flex flex-col justify-between">
+            <nav class="flex-1 pt-5 pb-4 overflow-y-auto">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                    <i class="fas fa-newspaper mr-3"></i>
+                    Articles
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                    <i class="fas fa-cog mr-3"></i>
+                    Settings
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    Logout
+                </a>
+            </nav>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -83,7 +89,7 @@
 
                             <div class="mb-4">
                                 <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                                <textarea name="content" id="content" rows="3" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
                             </div>
 
                             <div class="mb-4">
