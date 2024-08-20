@@ -13,9 +13,7 @@
     <!-- font links -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 </head>
 
@@ -127,6 +125,7 @@
                                 </div>
                             </div>
 
+
                             <!-- Platform options -->
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Platforms</label>
@@ -191,24 +190,37 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize flatpickr on the schedule input
+            Dropzone.options.mediaDropzone = {
+                url: '/upload', // Replace with your server URL
+                paramName: 'file',
+                maxFilesize: 2,
+                acceptedFiles: 'image/*,application/pdf',
+                dictDefaultMessage: 'Drag and drop files here or click to upload',
+            };
+
             const scheduleInput = flatpickr("#schedule", {
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",
-                // Initially hide the calendar
                 clickOpens: false
             });
 
-            // Add click event listener to the Schedule Post button
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+
             document.getElementById('schedule-post').addEventListener('click', function() {
-                // Toggle the calendar visibility
                 scheduleInput.open();
             });
         });
     </script>
+
     <!-- Added alpine for profile dropdown functionality -->
     <script src="//unpkg.com/alpinejs" defer></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js"></script>
 </body>
 
 </html>
