@@ -127,6 +127,7 @@
                                 </div>
                             </div>
 
+                            <!-- Platform options -->
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Platforms</label>
                                 <div class="mt-2 space-y-2">
@@ -157,6 +158,7 @@
                                     <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
                             </div>
 
+                            <!-- Buttons for schedule and create post -->
                             <div class="flex justify-between">
                                 <button type="button" id="schedule-post" class="bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
                                     Schedule Post
@@ -191,6 +193,7 @@
             });
         });
     </script>
+    <!-- Added alpine for profile dropdown functionality -->
     <script src="//unpkg.com/alpinejs" defer></script>
 
 </body>
