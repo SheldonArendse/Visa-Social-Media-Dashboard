@@ -160,7 +160,7 @@
 
                             <div class="mb-4">
                                 <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</label>
-                                <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
+                                <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
                             </div>
 
                             <div class="flex justify-between">
@@ -206,7 +206,6 @@
             });
         });
     </script>
-
     <!-- Added alpine for profile dropdown functionality -->
     <script src="//unpkg.com/alpinejs" defer></script>
 
