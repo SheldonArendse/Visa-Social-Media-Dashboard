@@ -150,15 +150,19 @@
                                         <input id="linkedin" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
                                         <label for="linkedin" class="ml-3 text-sm text-gray-700">LinkedIn</label>
                                     </div>
+
+                                    <div class="flex items-center">
+                                        <input id="tiktok" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <label for="tiktok" class="ml-3 text-sm text-gray-700">TikTok</label>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="mb-4">
-                                <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</
-                                        </label>
-                                    <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
+                                <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</label>
+                                <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
                             </div>
 
-                            <!-- Buttons for schedule and create post -->
                             <div class="flex justify-between">
                                 <button type="button" id="schedule-post" class="bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
                                     Schedule Post
@@ -187,12 +191,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            flatpickr("#schedule", {
+            // Initialize flatpickr on the schedule input
+            const scheduleInput = flatpickr("#schedule", {
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",
+                // Initially hide the calendar
+                clickOpens: false
+            });
+
+            // Add click event listener to the Schedule Post button
+            document.getElementById('schedule-post').addEventListener('click', function() {
+                // Toggle the calendar visibility
+                scheduleInput.open();
             });
         });
     </script>
+
     <!-- Added alpine for profile dropdown functionality -->
     <script src="//unpkg.com/alpinejs" defer></script>
 
