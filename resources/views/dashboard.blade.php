@@ -157,16 +157,15 @@
                                     <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
                             </div>
 
-                            <div class="flex justify-start">
-                                <button type="button" id="schedule-post" class="ms-4 bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                            <div class="flex justify-between">
+                                <button type="button" id="schedule-post" class="bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
                                     Schedule Post
                                 </button>
-                            </div>
-                            <div class="flex justify-end">
                                 <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
                                     Create Post
                                 </button>
                             </div>
+
                         </form>
                     </div>
                 </div>
