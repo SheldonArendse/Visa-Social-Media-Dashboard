@@ -61,15 +61,40 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
-                <h1 class="text-lg font-semibold text-accent hidden lg:block">Dashboard</h1>
-                <div class="flex items-center">
-                    <div class="ml-3 relative">
-                        <div>
-                            <button type="button" class="flex items-center max-w-xs bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="https://sa-migration-social-media.example.com/user-avatar.jpg" alt="User avatar">
+                <h1 class="text-lg font-semibold text-accent hidden lg:block">Visa Dashboard</h1>
+
+                <!-- User Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->name }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                             </button>
-                        </div>
-                    </div>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
             </div>
         </header>
@@ -127,18 +152,32 @@
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</label>
-                                <input id="schedule" name="schedule" type="text" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Select date and time">
+                                <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</
+                                        </label>
+                                    <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="Select Date and Time" data-input>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-secondary text-white border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                                    <i class="fas fa-save mr-2"></i> Save
+
+                            <div class="flex justify-start">
+                                <button type="button" id="schedule-post" class="ms-4 bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                                    Schedule Post
                                 </button>
-                                <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 text-gray-700 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                                    <i class="fas fa-arrow-left mr-2"></i> Cancel
-                                </a>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                                    Create Post
+                                </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Display Scheduled Posts -->
+                <div class="mt-8">
+                    <h2 class="text-lg leading-6 font-medium text-accent mb-4">Scheduled Posts</h2>
+                    <div class="bg-white overflow-hidden shadow-sm rounded-lg divide-y divide-gray-200">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="text-sm text-gray-500">No posts scheduled.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,28 +185,15 @@
     </div>
 
     <script>
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('open');
-        });
-
-        Dropzone.autoDiscover = false;
-        const dropzone = new Dropzone("#media-dropzone", {
-            url: "#",
-            acceptedFiles: "image/*,video/*",
-            addRemoveLinks: true,
-            maxFilesize: 10, // MB
-            init: function() {
-                this.on("error", function(file, response) {
-                    console.log(response);
-                });
-            }
-        });
-
-        flatpickr("#schedule", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#schedule", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
         });
     </script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 </body>
 
 </html>
