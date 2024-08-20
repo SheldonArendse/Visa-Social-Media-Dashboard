@@ -107,12 +107,12 @@
                             @csrf
                             <div class="mb-4">
                                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                                <input type="text" name="title" id="title" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <input type="text" name="title" id="title" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2">
                             </div>
 
                             <div class="mb-4">
                                 <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2"></textarea>
                             </div>
 
                             <div class="mb-4">
@@ -124,7 +124,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- Platform options -->
                             <div class="mb-4">

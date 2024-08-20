@@ -44,6 +44,14 @@ body {
     background-color: #959766;
 }
 
+/* input[type="text"], textarea {
+    padding: 0.5rem; /* Adjust padding as needed */
+}
+
+textarea {
+    padding: 0.5rem; /* Adjust padding as needed */
+} */
+
 .dropzone {
     border: 2px dashed var(--secondary-color);
     border-radius: 5px;
