@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SA Migration | Dashboard</title>
 
+    <link rel="icon" href="{{ asset('images/sami-logo(1).png') }}" type="image/png">
+
     <!-- CSS link -->
     <link href="{{ asset('css/dashboard-style.css') }}" rel="stylesheet">
 
@@ -107,12 +109,12 @@
                             @csrf
                             <div class="mb-4">
                                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                                <input type="text" name="title" id="title" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2">
+                                <input type="text" name="title" id="title" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-400 rounded-md px-3 py-2">
                             </div>
 
                             <div class="mb-4">
                                 <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-3 py-2"></textarea>
+                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-400 rounded-md px-3 py-2" placeholder="What's on your mind?"></textarea>
                             </div>
 
                             <div class="mb-4">
@@ -158,7 +160,7 @@
 
                             <div class="mb-4">
                                 <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</label>
-                                <input type="text" name="schedule" id="schedule" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
+                                <input type="text" name="schedule" id="schedule" class="sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
                             </div>
 
                             <div class="flex justify-between">
