@@ -1,0 +1,120 @@
+/* Custom Colors */
+.text-dark-blue {
+    color: #081c3c;
+}
+.bg-dark-blue {
+    background-color: #081c3c;
+}
+.text-light-blue {
+    color: #5884fc;
+}
+.border-light-blue {
+    border-color: #5884fc;
+}
+
+/* Heading */
+.heading-underline {
+    content: "";
+    width: 100px;
+    height: 4px;
+    background-color: #5884fc;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Buttons */
+.btn-facebook {
+    background-color: #3b5998;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-facebook:hover {
+    background-color: #2d4373;
+}
+
+.btn-twitter {
+    background-color: #1da1f2;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-twitter:hover {
+    background-color: #1991db;
+}
+
+.btn-instagram {
+    background-color: #e1306c;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-instagram:hover {
+    background-color: #c3215d;
+}
+
+.btn-linkedin {
+    background-color: #0077b5;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-linkedin:hover {
+    background-color: #006096;
+}
+
+/* Metric Card */
+.metric-card {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-title {
+    font-size: 18px;
+    color: #081c3c;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5884fc;
+}
+
+.metric-change {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Chart Card */
+.chart-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-title {
+    font-size: 18px;
+    color: #081c3c;
+    font-weight: bold;
+    margin-bottom: 20px;
+}

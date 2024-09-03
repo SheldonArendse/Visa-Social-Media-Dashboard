@@ -13,6 +13,7 @@
     <link href="{{ asset('css/dashboard-style.css') }}" rel="stylesheet">
 
     <!-- font links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.css" rel="stylesheet">
@@ -27,7 +28,7 @@
         </div>
         <div class="flex-1 flex flex-col justify-between">
             <nav class="flex-1 pt-5 pb-4 overflow-y-auto">
-                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                <a href="{{ route('dashboard') }}" id="side-nav" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
                     <i class="fas fa-tachometer-alt mr-3"></i>
                     Dashboard
                 </a>
@@ -133,33 +134,38 @@
                                 <div class="mt-2 space-y-2">
                                     <div class="flex items-center">
                                         <input id="facebook" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="facebook" class="ml-3 text-sm text-gray-700">Facebook</label>
+                                        <label for="facebook" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-facebook-square mr-2" style="color: #3b5998;"></i> Facebook
+                                        </label>
                                     </div>
 
                                     <div class="flex items-center">
                                         <input id="twitter" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="twitter" class="ml-3 text-sm text-gray-700">Twitter</label>
+                                        <label for="twitter" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-twitter mr-2" style="color: #1DA1F2;"></i> Twitter
+                                        </label>
                                     </div>
 
                                     <div class="flex items-center">
                                         <input id="instagram" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="instagram" class="ml-3 text-sm text-gray-700">Instagram</label>
+                                        <label for="instagram" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-instagram mr-2" style="color: #C13584;"></i> Instagram
+                                        </label>
                                     </div>
 
                                     <div class="flex items-center">
                                         <input id="linkedin" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="linkedin" class="ml-3 text-sm text-gray-700">LinkedIn</label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="tiktok" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="tiktok" class="ml-3 text-sm text-gray-700">TikTok</label>
+                                        <label for="linkedin" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-linkedin mr-2" style="color: #0A66C2;"></i> LinkedIn
+                                        </label>
                                     </div>
                                 </div>
                             </div>
 
+
+
                             <div class="mb-4">
-                                <label for="schedule" class="block text-sm font-medium text-gray-700">Schedule Post</label>
+                                <label for="schedule" class="block text-sm font-medium text-gray-700">Scheduled Post</label>
                                 <input type="text" name="schedule" id="schedule" class="sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
                             </div>
 
