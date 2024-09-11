@@ -8,7 +8,7 @@
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Dashboard
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+            <a href="{{ route('articles') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
                 <i class="fas fa-newspaper mr-3"></i>
                 Articles
             </a>
@@ -24,6 +24,6 @@
                 <i class="fas fa-sign-out-alt mr-3"></i>
                 Logout
             </a>
-        </nav>r
+        </nav>
     </div>
 </aside>
