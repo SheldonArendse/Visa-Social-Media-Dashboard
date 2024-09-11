@@ -8,14 +8,18 @@
     <title>Social Media Analytics Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="{{ asset('images/sami-logo(1).png') }}" type="image/png">
+    <!-- style links -->
     <link rel="stylesheet" href="{{ asset('css/analytics-style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard-style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body class="font-sans">
     <!-- Wrapper to create flex layout for sidebar and content -->
     <div class="flex min-h-screen">
+
         @include('layouts.sidebar')
         <div class="container mx-auto px-4 py-8">
             <!-- Heading -->

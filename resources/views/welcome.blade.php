@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visa Social Media Dashboard</title>
+
+    <!-- favicon in tab -->
+    <link rel="icon" href="{{ asset('images/sami-logo(1).png') }}" type="image/png">
+    <!-- style links -->
     <link rel="stylesheet" href="{{ asset('css/welcome-style.css') }}">
 </head>
 
