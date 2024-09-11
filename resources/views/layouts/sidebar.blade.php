@@ -16,14 +16,14 @@
                 <i class="fas fa-chart-line mr-3"></i>
                 Analytics
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
-                <i class="fas fa-cog mr-3"></i>
-                Settings
+            <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+                <i class="fas fa-user mr-3"></i>
+                Profile
             </a>
             <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
                 <i class="fas fa-sign-out-alt mr-3"></i>
                 Logout
             </a>
-        </nav>
+        </nav>r
     </div>
 </aside>
