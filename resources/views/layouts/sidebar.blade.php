@@ -12,7 +12,7 @@
                 <i class="fas fa-newspaper mr-3"></i>
                 Articles
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
+            <a href="{{ route('analytics') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-secondary hover:text-accent">
                 <i class="fas fa-chart-line mr-3"></i>
                 Analytics
             </a>
