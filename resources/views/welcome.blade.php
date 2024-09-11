@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMI - Visa Social Media Dashboard</title>
+    <title>Visa Social Media Dashboard</title>
     <link rel="stylesheet" href="{{ asset('css/welcome-style.css') }}">
 </head>
 
@@ -36,7 +36,7 @@
 
         <div class="visual-section">
             <div class="globe">
-                <img src="{{ asset('images/sami-logo.png') }}" alt="SAMI Logo" class="globe-logo">
+                <img src="{{ asset('images/sami-logo(1).png') }}" alt="SAMI Logo" class="globe-logo">
                 <div class="meridians"></div>
                 <div class="parallels"></div>
             </div>
