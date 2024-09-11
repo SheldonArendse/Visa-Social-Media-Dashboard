@@ -5,8 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles | Visa Social Media Dashboard</title>
+
+    <!-- Style linking -->
     <link rel="stylesheet" href="{{ asset('css/articles-style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard-style.css') }}">
+
+    <!-- favicon in tab -->
+    <link rel="icon" href="{{ asset('images/sami-logo(1).png') }}" type="image/png">
 </head>
 
 <body>
