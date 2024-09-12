@@ -16,7 +16,7 @@
 
 <body>
 
-    <div class="container">
+    <div class="article-container">
         <h1>Articles</h1>
 
         <div class="search-bar">

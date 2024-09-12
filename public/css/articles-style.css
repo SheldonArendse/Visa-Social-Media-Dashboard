@@ -19,7 +19,7 @@ body {
     background-color: var(--background-color);
 }
 
-.container {
+.article-container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
