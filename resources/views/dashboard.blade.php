@@ -77,7 +77,7 @@
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg divide-y divide-gray-200">
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
-                        <form action="#" method="POST" id="article-form" enctype="multipart/form-data">
+                        <form action="{{ url('/facebook/post') }}" method="POST" id="article-form" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-4">
                                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
