@@ -20,6 +20,20 @@ Route::get('/analytics', function () {
     return view('analytics');
 })->name('analytics');
 
+// Route for the articles page
+Route::middleware('auth')->group(function () {
+    Route::get('/articles', function () {
+        return view('articles');
+    })->name('articles');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Verify that user is logged in before posting
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
+});
+
 // Route to post to Facebook using Guzzle
 Route::post('/facebook/post', [FacebookController::class, 'postToFacebook'])->middleware('auth');
 
