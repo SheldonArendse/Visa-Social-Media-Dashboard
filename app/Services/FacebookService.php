@@ -3,34 +3,50 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
 
 class FacebookService
 {
     protected $client;
-    protected $accessToken;
 
     public function __construct()
     {
         $this->client = new Client();
-        $this->accessToken = env('FACEBOOK_PAGE_ACCESS_TOKEN');
     }
 
-    public function postToPage($message, $imageUrl = null)
+    public function postToPage($message, $image = null, $accessToken)
     {
-        $url = 'https://graph.facebook.com/v12.0/me/feed';
+        $url = 'https://graph.facebook.com/v12.0/me/feed'; // Adjust to specific page if needed
 
+        // Prepare form parameters
         $params = [
-            'form_params' => [
-                'access_token' => $this->accessToken,
-                'message' => $message,
-            ]
+            'access_token' => $accessToken,
+            'message' => $message,
         ];
 
-        if ($imageUrl) {
-            $params['form_params']['picture'] = $imageUrl;
+        // Handle image upload
+        if ($image) {
+            // Upload the image to a public storage location
+            $imagePath = $image->store('public/uploads');
+            $imageUrl = Storage::url($imagePath);
+
+            // Use Facebook's photo upload endpoint
+            $photoUrl = 'https://graph.facebook.com/v12.0/me/photos';
+            $response = $this->client->post($photoUrl, [
+                'form_params' => [
+                    'access_token' => $accessToken,
+                    'url' => url($imageUrl), // Facebook expects a URL
+                    'caption' => $message,
+                ],
+            ]);
+
+            return json_decode($response->getBody()->getContents());
         }
 
-        $response = $this->client->post($url, $params);
+        // Post without image
+        $response = $this->client->post($url, [
+            'form_params' => $params
+        ]);
 
         return json_decode($response->getBody()->getContents());
     }

@@ -41,7 +41,6 @@
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
-
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -104,7 +103,7 @@
                                 <label class="block text-sm font-medium text-gray-700">Platforms</label>
                                 <div class="mt-2 space-y-2">
                                     <div class="flex items-center">
-                                        <input id="facebook" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <input id="facebook" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded" value="facebook">
                                         <label for="facebook" class="ml-3 text-sm text-gray-700 flex items-center">
                                             <i class="fab fa-facebook-square mr-2" style="color: #3b5998;"></i> Facebook
                                         </label>
@@ -133,8 +132,6 @@
                                 </div>
                             </div>
 
-
-
                             <div class="mb-4">
                                 <label for="schedule" class="block text-sm font-medium text-gray-700">Scheduled Post</label>
                                 <input type="text" name="schedule" id="schedule" class="sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
@@ -156,49 +153,68 @@
                 <!-- Display Scheduled Posts -->
                 <div class="mt-8">
                     <h2 class="text-lg leading-6 font-medium text-accent mb-4">Scheduled Posts</h2>
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg divide-y divide-gray-200">
-                        <div class="px-4 py-5 sm:p-6">
-                            <div class="text-sm text-gray-500">No posts scheduled.</div>
-                        </div>
-                    </div>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Time</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- Populate this section with scheduled posts data from the backend -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        // Initialize flatpickr
+        flatpickr("#schedule", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+
+        // JavaScript to handle the form submission
         document.addEventListener('DOMContentLoaded', function() {
-            Dropzone.options.mediaDropzone = {
-                url: '/upload', // Replace with your server URL
-                paramName: 'file',
-                maxFilesize: 2,
-                acceptedFiles: 'image/*,application/pdf',
-                dictDefaultMessage: 'Drag and drop files here or click to upload',
-            };
+            const form = document.getElementById('article-form');
 
-            const scheduleInput = flatpickr("#schedule", {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
-                clickOpens: false
-            });
+            form.addEventListener('submit', function(event) {
+                const facebookChecked = document.getElementById('facebook').checked;
 
-            const sidebar = document.querySelector('.sidebar');
-            const sidebarToggle = document.getElementById('sidebar-toggle');
+                // If the Facebook checkbox is checked, handle the form submission for Facebook
+                if (facebookChecked) {
+                    event.preventDefault(); // Prevent the default form submission
 
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('open');
-            });
+                    const formData = new FormData(form);
 
-            document.getElementById('schedule-post').addEventListener('click', function() {
-                scheduleInput.open();
+                    // Send the form data to your Laravel backend to handle the Facebook post
+                    fetch("{{ url('/facebook/post') }}", {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from your backend
+                            alert(data.message);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
             });
         });
     </script>
-
-    <!-- Added alpine for profile dropdown functionality -->
-    <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js"></script>
 </body>
 
 </html>

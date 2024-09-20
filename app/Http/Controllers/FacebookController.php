@@ -16,25 +16,30 @@ class FacebookController extends Controller
 
     public function postToFacebook(Request $request)
     {
-        $accessToken = session('fb_access_token');
+        // Check if platforms include Facebook
+        if (in_array('facebook', $request->input('platforms', []))) {
 
-        if (!$accessToken) {
-            return redirect()->route('facebook.login');
+            $accessToken = session('fb_access_token');
+
+            // Redirect if no access token is found
+            if (!$accessToken) {
+                return redirect()->route('facebook.login');
+            }
+
+            // Get form inputs
+            $message = $request->input('content');
+            $image = $request->file('media'); // Assumes file is uploaded under 'media'
+
+            // Call service to post on Facebook
+            try {
+                $result = $this->facebookService->postToPage($message, $image, $accessToken);
+
+                return redirect('/dashboard')->with('status', 'Posted successfully to Facebook!');
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['error' => 'Error posting to Facebook: ' . $e->getMessage()]);
+            }
         }
 
-        $client = new \GuzzleHttp\Client();
-
-        try {
-            $response = $client->post('https://graph.facebook.com/v12.0/412442358622297/feed', [
-                'form_params' => [
-                    'message' => $request->input('message'),
-                    'access_token' => $accessToken,
-                ],
-            ]);
-
-            return redirect('/dashboard')->with('status', 'Posted successfully to Facebook!');
-        } catch (\Exception $e) {
-            return 'Error: ' . $e->getMessage();
-        }
+        return redirect('/dashboard')->with('status', 'No platforms selected.');
     }
 }
