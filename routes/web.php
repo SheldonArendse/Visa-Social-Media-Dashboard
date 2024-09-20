@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Http\Controllers\FacebookController;
+use Illuminate\Support\Facades\Log;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,7 +52,7 @@ Route::middleware('auth')->group(function () {
         $params = [
             'client_id' => env('FACEBOOK_CLIENT_ID'),
             'redirect_uri' => env('FACEBOOK_REDIRECT_URL'),
-            'scope' => 'pages_manage_posts,publish_to_pages',
+            'scope' => 'pages_manage_posts',
             'response_type' => 'code',
         ];
 
@@ -61,6 +63,7 @@ Route::middleware('auth')->group(function () {
 
     // Facebook OAuth Callback route
     Route::get('/facebook/callback', function (Request $request) {
+        Log::info('Facebook callback received', $request->all());
         $code = $request->get('code');
 
         if (!$code) {
@@ -116,6 +119,9 @@ Route::middleware('auth')->group(function () {
             return 'Error: ' . $e->getMessage();
         }
     })->name('post.facebook');
+
+    Route::get('/facebook/redirect', [FacebookController::class, 'redirectToFacebook'])->name('facebook.redirect');
+    Route::get('/facebook/callback', [FacebookController::class, 'handleCallback'])->name('facebook.callback');
 });
 
 require __DIR__ . '/auth.php';
