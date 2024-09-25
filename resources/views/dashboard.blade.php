@@ -76,6 +76,8 @@
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg divide-y divide-gray-200">
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
+
+                        <!-- Form to create a post -->
                         <form action="{{ url('/facebook/post') }}" method="POST" id="article-form" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-4">
@@ -151,14 +153,24 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platforms</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Time</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <!-- Populate this section with scheduled posts data from the backend -->
+                            <!-- Example post data -->
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Example content for scheduled post</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Facebook, Twitter</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-09-25 / 12:00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-secondary hover:text-primary">Edit</button>
+                                    <button class="text-red-600 hover:text-red-900 ml-4">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Add your scheduled posts here -->
                         </tbody>
                     </table>
                 </div>
@@ -170,46 +182,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
-        // Initialize flatpickr
+        // Initialize Dropzone
+        Dropzone.autoDiscover = false;
+        const dropzone = new Dropzone("#media-dropzone", {
+            url: "/file/post", // Not actually used, we handle form submission manually
+            autoProcessQueue: false,
+            maxFiles: 1,
+            acceptedFiles: "image/*",
+            init: function() {
+                this.on("addedfile", function(file) {
+                    console.log("File added:", file);
+                });
+            }
+        });
+
+        //  Handle form submission
+        $('#article-form').on('submit', function(e) {
+            e.preventDefault();
+
+            if (dropzone.getQueuedFiles().length > 0) {
+                dropzone.processQueue(); // Upload the file manually
+            } else {
+                $(this).off('submit').submit(); // No files to upload, proceed with form submission
+            }
+        });
+
+        // Initialize flatpickr for scheduled posts
         flatpickr("#schedule", {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
-        });
-
-        // JavaScript to handle the form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('article-form');
-
-            form.addEventListener('submit', function(event) {
-                const facebookChecked = document.getElementById('facebook').checked;
-
-                // If the Facebook checkbox is checked, handle the form submission for Facebook
-                if (facebookChecked) {
-                    event.preventDefault(); // Prevent the default form submission
-
-                    const formData = new FormData(form);
-
-                    // Send the form data to your Laravel backend to handle the Facebook post
-                    fetch("{{ url('/facebook/post') }}", {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Handle the response from your backend
-                            alert(data.message);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                }
-            });
+            minDate: "today"
         });
     </script>
+
 </body>
 
 </html>

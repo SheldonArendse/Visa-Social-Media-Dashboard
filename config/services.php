@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'facebook' => [
+        'page_id' => '412442358622297',
+        'page_access_token' => 'EAAUrQQlB87YBO8nkp8ZCeGyxQYv9WIkcnmY3GXc1aOeoYNSZAIZCG2frYB3LLrc9mV0C2YlGwnBDjawtJsZC2PpmspgdJZCz2FXdJjMPKH8BbcvsdEPOfHyZCVPMjYAPleR9rRQoJSFgSBtoEOuuF8pfQZAXCYfbKjhabsPhlQzjDkEwQ3NYae2GZB1KlQhuRn95wBjp71buamdlnaZAesI9ZCpNzEUZBcZD',
+    ],
+
 ];

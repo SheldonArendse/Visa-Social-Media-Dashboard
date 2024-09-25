@@ -122,6 +122,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/facebook/redirect', [FacebookController::class, 'redirectToFacebook'])->name('facebook.redirect');
     Route::get('/facebook/callback', [FacebookController::class, 'handleCallback'])->name('facebook.callback');
+    // Route for posting to Facebook
+    Route::post('/facebook/post', [FacebookController::class, 'postToFacebook']);
 });
 
 require __DIR__ . '/auth.php';
