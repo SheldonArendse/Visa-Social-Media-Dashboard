@@ -29,12 +29,11 @@ class FacebookService
         try {
             // Check if we're posting an image or a text post
             if ($image) {
-                // Upload the image to a public storage location and get the URL
+                // Store the image temporarily and get the path
                 $imagePath = $image->store('public/uploads');
-                $imageUrl = Storage::url($imagePath);
 
                 // Post the image to the Facebook page
-                return $this->postImageToFacebook($message, $imageUrl, $accessToken, $pageId);
+                return $this->postImageToFacebook($message, $imagePath, $accessToken, $pageId);
             } else {
                 // Post only text to the Facebook page
                 return $this->postMessageToFacebook($message, $accessToken, $pageId);
@@ -70,18 +69,27 @@ class FacebookService
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    private function postImageToFacebook($message, $imageUrl, $accessToken, $pageId)
+    private function postImageToFacebook($message, $imagePath, $accessToken, $pageId)
     {
         $photoUrl = "https://graph.facebook.com/v20.0/{$pageId}/photos";
 
-        $params = [
-            'access_token' => $accessToken,
-            'url' => $imageUrl,
-            'caption' => $message,
-        ];
-
+        // Use the file path directly
         $response = $this->client->post($photoUrl, [
-            'form_params' => $params
+            'multipart' => [
+                [
+                    'name'     => 'access_token',
+                    'contents' => $accessToken
+                ],
+                [
+                    'name'     => 'caption',
+                    'contents' => $message
+                ],
+                [
+                    'name'     => 'file', // The field name for the file
+                    'contents' => fopen(storage_path("app/{$imagePath}"), 'r'), // Open the image file
+                    'filename' => basename($imagePath) // Get the original filename
+                ]
+            ]
         ]);
 
         return json_decode($response->getBody()->getContents(), true);

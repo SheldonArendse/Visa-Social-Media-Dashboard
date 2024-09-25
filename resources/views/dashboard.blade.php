@@ -186,17 +186,50 @@
     <script>
         // Initialize Dropzone
         Dropzone.autoDiscover = false;
+
         const dropzone = new Dropzone("#media-dropzone", {
             url: "/file/post", // Not actually used, we handle form submission manually
-            autoProcessQueue: false,
-            maxFiles: 1,
-            acceptedFiles: "image/*",
+            autoProcessQueue: false, // Disable automatic uploads
+            maxFiles: 1, // Allow only one file
+            acceptedFiles: "image/*", // Accept only image files
+            clickable: true, // Allow clicking on the dropzone to open file explorer
             init: function() {
-                this.on("addedfile", function(file) {
+                const dz = this; // Reference to the Dropzone instance
+
+                // Event listener for when a file is added
+                dz.on("addedfile", function(file) {
                     console.log("File added:", file);
+                    // You may want to show a preview or some feedback to the user here
+                });
+
+                // Handle form submission
+                document.querySelector("#your-form-id").addEventListener("submit", function(e) {
+                    e.preventDefault(); // Prevent the default form submission
+
+                    // Check if there's a file in the dropzone
+                    if (dz.files.length > 0) {
+                        dz.processQueue(); // Manually process the queue
+                    } else {
+                        // Handle the case when no file is uploaded
+                        console.log("No file uploaded.");
+                        // Optionally, you can submit the form data without an image
+                    }
+                });
+
+                // Event listener for processing the queue
+                dz.on("queuecomplete", function() {
+                    console.log("Upload complete!");
+                    // Optionally, you can reset the dropzone after the upload
+                    dz.removeAllFiles(); // Clear files from Dropzone
+                });
+
+                // Event listener for upload errors
+                dz.on("error", function(file, errorMessage) {
+                    console.error("Error uploading file:", errorMessage);
                 });
             }
         });
+
 
         //  Handle form submission
         $('#article-form').on('submit', function(e) {
