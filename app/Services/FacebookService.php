@@ -31,6 +31,7 @@ class FacebookService
             if ($image) {
                 // Store the image temporarily and get the path
                 $imagePath = $image->store('public/uploads');
+                $imagePath = str_replace('public/', '', $imagePath); // Remove 'public/' for storage_path
 
                 // Post the image to the Facebook page
                 return $this->postImageToFacebook($message, $imagePath, $accessToken, $pageId);

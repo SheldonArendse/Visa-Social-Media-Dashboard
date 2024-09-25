@@ -77,6 +77,21 @@
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
 
+                        @if(session('success'))
+                        <div class="notification success" id="success-message">
+                            {{ session('success') }}
+                            <button class="close-btn" onclick="closeNotification('success-message')">&times;</button>
+                        </div>
+                        @endif
+
+                        @if(session('error'))
+                        <div class="notification error" id="error-message">
+                            {{ session('error') }}
+                            <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
+                        </div>
+                        @endif
+
+
                         <!-- Form to create a post -->
                         <form action="{{ url('/facebook/post') }}" method="POST" id="article-form" enctype="multipart/form-data">
                             @csrf
@@ -203,7 +218,7 @@
                 });
 
                 // Handle form submission
-                document.querySelector("#your-form-id").addEventListener("submit", function(e) {
+                document.querySelector("#article-form").addEventListener("submit", function(e) {
                     e.preventDefault(); // Prevent the default form submission
 
                     // Check if there's a file in the dropzone
@@ -231,16 +246,51 @@
         });
 
 
-        //  Handle form submission
+        // Handle form submission
         $('#article-form').on('submit', function(e) {
             e.preventDefault();
 
+            const formData = new FormData(this); // Create a new FormData object from the form
+
+            // Check if there are files in the Dropzone
             if (dropzone.getQueuedFiles().length > 0) {
-                dropzone.processQueue(); // Upload the file manually
+                // Append the file from Dropzone to FormData
+                dropzone.getQueuedFiles().forEach((file) => {
+                    formData.append('file', file); // Assuming the file input name is 'file'
+                });
+
+                // Process the Dropzone queue
+                dropzone.processQueue(); // This uploads the file
+
+                // Send the FormData containing the form inputs and file
+                $.ajax({
+                    url: '/your-post-url', // Your route to handle the post
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Tell jQuery not to set contentType
+                    processData: false, // Tell jQuery not to process the data
+                    success: function(response) {
+                        console.log("Post successful:", response);
+                        // Handle success (e.g., show a success message)
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error posting:", error);
+                        // Handle error (e.g., show an error message)
+                    }
+                });
             } else {
-                $(this).off('submit').submit(); // No files to upload, proceed with form submission
+                // If no files, just submit the form
+                this.submit();
             }
         });
+
+
+        // Make sure Dropzone doesn't auto-submit the form
+        dropzone.on('complete', function() {
+            dropzone.removeAllFiles(); // Clear Dropzone
+            $('#article-form')[0].reset(); // Optionally, reset the form
+        });
+
 
         // Initialize flatpickr for scheduled posts
         flatpickr("#schedule", {

@@ -17,7 +17,7 @@ class FacebookController extends Controller
     public function postToFacebook(Request $request)
     {
         $content = $request->input('content');
-        $image = $request->file('file'); // 'file' is the Dropzone name for uploaded files
+        $image = $request->file('file'); // Ensure this matches Dropzone's file name ('file')
         $platforms = $request->input('platforms');
 
         if (in_array('facebook', $platforms)) {
@@ -28,13 +28,17 @@ class FacebookController extends Controller
             // Post to the Facebook page using the service
             $response = $this->facebookService->postToPage($content, $image, $pageAccessToken, $pageId);
 
+            // Check for errors in the response
             if (isset($response['error'])) {
-                return response()->json(['message' => 'Failed to publish post: ' . $response['error']], 500);
+                // Flash an error message to the session
+                return redirect()->back()->with('error', 'Failed to publish post: ' . $response['error']['message']);
             } else {
-                return response()->json(['message' => 'Post published successfully!']);
+                // Flash a success message to the session
+                return redirect()->back()->with('success', 'Post published successfully!');
             }
         } else {
-            return response()->json(['message' => 'Facebook platform not selected!'], 400);
+            // Flash an error message to the session if Facebook platform not selected
+            return redirect()->back()->with('error', 'Facebook platform not selected!');
         }
     }
 }
