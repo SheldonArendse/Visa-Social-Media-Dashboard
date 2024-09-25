@@ -22,7 +22,7 @@ class FacebookController extends Controller
 
         if (in_array('facebook', $platforms)) {
             // Use the new Page Access Token from the previous response
-            $pageAccessToken = 'EAAUrQQlB87YBO9g0HTRePOigWlDrIhJRhDRbkHEURTI6VQDvsWPhZAi1uItUBXdi3IltxmExFS6SYOZBWXiZBwRD1QLTBZCfQjVZAoSZAFgS6lozPGZAohuCeex3qBwnCXpZAzIZC6ZCUXMsYPUpyWO0KQ89fgWyBYQ2QpvQZAVu7nVAiBAaiUPVMgv4pLNwB6nyQ7jA32C2CsRgcb5eTMCHokAcOk8';
+            $pageAccessToken = 'EAAUrQQlB87YBO6niBKwnNdV6vu3PUoSBUtp3l8QtYFPFnvI2BkFCkOqHHQn0iuvZBZBSwh0XedD6b8RGSi1xiWSHI31VDMPTZAxXSEIJADRqClxEq9ZClfqPUzJEGZCCmGrd3qTwr2aqYnGZAKgvInPuMZB2zBnBTWtUOoXYWBZBIUCvvp7BMO9lUzziZBZAJMAB1m6ZC42j39NwsmoIA8qTsd38ltd';
             $pageId = '412442358622297'; // Ensure this is the correct Facebook Page ID
 
             // Post to the Facebook page using the service

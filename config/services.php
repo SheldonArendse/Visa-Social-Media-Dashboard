@@ -37,7 +37,7 @@ return [
 
     'facebook' => [
         'page_id' => '412442358622297',
-        'page_access_token' => 'EAAUrQQlB87YBO8nkp8ZCeGyxQYv9WIkcnmY3GXc1aOeoYNSZAIZCG2frYB3LLrc9mV0C2YlGwnBDjawtJsZC2PpmspgdJZCz2FXdJjMPKH8BbcvsdEPOfHyZCVPMjYAPleR9rRQoJSFgSBtoEOuuF8pfQZAXCYfbKjhabsPhlQzjDkEwQ3NYae2GZB1KlQhuRn95wBjp71buamdlnaZAesI9ZCpNzEUZBcZD',
+        'page_access_token' => 'EAAUrQQlB87YBO6niBKwnNdV6vu3PUoSBUtp3l8QtYFPFnvI2BkFCkOqHHQn0iuvZBZBSwh0XedD6b8RGSi1xiWSHI31VDMPTZAxXSEIJADRqClxEq9ZClfqPUzJEGZCCmGrd3qTwr2aqYnGZAKgvInPuMZB2zBnBTWtUOoXYWBZBIUCvvp7BMO9lUzziZBZAJMAB1m6ZC42j39NwsmoIA8qTsd38ltd',
     ],
 
 ];
