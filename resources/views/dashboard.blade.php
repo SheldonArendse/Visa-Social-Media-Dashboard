@@ -73,23 +73,24 @@
         <!-- Main Content Area -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                @if(session('success'))
+                <div class="notification success" id="success-message">
+                    {{ session('success') }}
+                    <button class="close-btn" onclick="closeNotification('success-message')">&times;</button>
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="notification error" id="error-message">
+                    {{ session('error') }}
+                    <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
+                </div>
+                @endif
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg divide-y divide-gray-200">
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
 
-                        @if(session('success'))
-                        <div class="notification success" id="success-message">
-                            {{ session('success') }}
-                            <button class="close-btn" onclick="closeNotification('success-message')">&times;</button>
-                        </div>
-                        @endif
 
-                        @if(session('error'))
-                        <div class="notification error" id="error-message">
-                            {{ session('error') }}
-                            <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
-                        </div>
-                        @endif
 
 
                         <!-- Form to create a post -->
