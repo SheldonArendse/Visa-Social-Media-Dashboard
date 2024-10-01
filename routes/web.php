@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
     // Facebook OAuth Login route
     Route::get('/login/facebook', function () {
-        $fbOAuthUrl = 'https://www.facebook.com/v12.0/dialog/oauth';
+        $fbOAuthUrl = 'https://www.facebook.com/v20.0/dialog/oauth';
         $params = [
             'client_id' => env('FACEBOOK_CLIENT_ID'),
             'redirect_uri' => env('FACEBOOK_REDIRECT_URL'),
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 
         // Exchange the code for an access token
         $client = new Client();
-        $response = $client->post('https://graph.facebook.com/v12.0/oauth/access_token', [
+        $response = $client->post('https://graph.facebook.com/v20.0/oauth/access_token', [
             'query' => [
                 'client_id' => env('FACEBOOK_CLIENT_ID'),
                 'redirect_uri' => env('FACEBOOK_REDIRECT_URL'),
@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
         $client = new Client();
         try {
             // Post to Facebook page feed (replace {page-id} with the Facebook Page ID)
-            $response = $client->post('https://graph.facebook.com/v12.0/412442358622297/feed', [
+            $response = $client->post('https://graph.facebook.com/v20.0/412442358622297/feed', [
                 'form_params' => $data + [
                     'access_token' => $accessToken,
                 ],
