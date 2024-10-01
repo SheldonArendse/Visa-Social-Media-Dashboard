@@ -202,18 +202,17 @@
         Dropzone.autoDiscover = false;
 
         const dropzone = new Dropzone("#media-dropzone", {
-            url: "/file/post", // Not actually used, we handle form submission manually
-            autoProcessQueue: false, // Disable automatic uploads
-            maxFiles: 1, // Allow only one file
-            acceptedFiles: "image/*", // Accept only image files
-            clickable: true, // Allow clicking on the dropzone to open file explorer
+            url: "/file/post",
+            autoProcessQueue: false,
+            maxFiles: 1,
+            acceptedFiles: "image/*",
+            clickable: true,
             init: function() {
-                const dz = this; // Reference to the Dropzone instance
+                const dz = this;
 
                 // Event listener for when a file is added
                 dz.on("addedfile", function(file) {
                     console.log("File added:", file);
-                    // You may want to show a preview or some feedback to the user here
                 });
 
                 // Handle form submission
@@ -224,16 +223,13 @@
                     if (dz.files.length > 0) {
                         dz.processQueue(); // Manually process the queue
                     } else {
-                        // Handle the case when no file is uploaded
                         console.log("No file uploaded.");
-                        // Optionally, you can submit the form data without an image
                     }
                 });
 
                 // Event listener for processing the queue
                 dz.on("queuecomplete", function() {
                     console.log("Upload complete!");
-                    // Optionally, you can reset the dropzone after the upload
                     dz.removeAllFiles(); // Clear files from Dropzone
                 });
 
@@ -249,7 +245,7 @@
         $('#article-form').on('submit', function(e) {
             e.preventDefault();
 
-            const formData = new FormData(this); // Create a new FormData object from the form
+            const formData = new FormData(this);
 
             // Check if there are files in the Dropzone
             if (dropzone.getQueuedFiles().length > 0) {
@@ -263,22 +259,20 @@
 
                 // Send the FormData containing the form inputs and file
                 $.ajax({
-                    url: '/your-post-url', // Your route to handle the post
+                    url: '/facebook/post', // URL for posting
                     type: 'POST',
                     data: formData,
-                    contentType: false, // Tell jQuery not to set contentType
-                    processData: false, // Tell jQuery not to process the data
+                    contentType: false,
+                    processData: false,
                     success: function(response) {
                         console.log("Post successful:", response);
-                        // Handle success (e.g., show a success message)
                     },
                     error: function(xhr, status, error) {
                         console.error("Error posting:", error);
-                        // Handle error (e.g., show an error message)
                     }
                 });
             } else {
-                // If no files, just submit the form
+                // Submit form without files
                 this.submit();
             }
         });
@@ -286,8 +280,8 @@
 
         // Make sure Dropzone doesn't auto-submit the form
         dropzone.on('complete', function() {
-            dropzone.removeAllFiles(); // Clear Dropzone
-            $('#article-form')[0].reset(); // Optionally, reset the form
+            dropzone.removeAllFiles();
+            $('#article-form')[0].reset();
         });
 
 
