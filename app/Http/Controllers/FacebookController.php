@@ -17,28 +17,33 @@ class FacebookController extends Controller
     public function postToFacebook(Request $request)
     {
         $content = $request->input('content');
-        $image = $request->file('file'); // Ensure this matches Dropzone's file name ('file')
-        $platforms = $request->input('platforms');
+        $image = $request->file('file');
 
-        if (in_array('facebook', $platforms)) {
-            // Use the new Page Access Token from the previous response
+        // Validate the image
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max size 2MB
+        ]);
+
+        // Check if the user wants to post to Facebook
+        if (in_array('facebook', $request->input('platforms'))) {
+            // Store the image temporarily
+            $imagePath = $image->store('uploads', 'public');
+
+            // Use your Page Access Token and Page ID
             $pageAccessToken = 'EAAUrQQlB87YBO6V8pRt7kfXhyhx47cj3usOOAzbzMdelwp4rYExKlAcZAfi443E57ifnnWZCFG01Uf9qzLQVeHwGQRQPSEEDRL9TgPwO0fqLp8mUnTEGyKRryTZBhaQ8ZCMkwZBuAI4TWLVkUvC0J6ZCdmdFarl3LI4ur4fPY6IURv6aMKH2svQntWTJcW7xrI';
-            $pageId = '412442358622297'; // Ensure this is the correct Facebook Page ID
+            $pageId = '412442358622297';
 
-            // Post to the Facebook page using the service
-            $response = $this->facebookService->postToPage($content, $image, $pageAccessToken, $pageId);
+            // Call your Facebook service to post the image
+            $response = $this->facebookService->postImageToFacebook($content, $imagePath, $pageAccessToken, $pageId);
 
-            // Check for errors in the response
+            // Handle response and return success or error message
             if (isset($response['error'])) {
-                // Flash an error message to the session
                 return redirect()->back()->with('error', 'Failed to publish post: ' . $response['error']['message']);
             } else {
-                // Flash a success message to the session
                 return redirect()->back()->with('success', 'Post published successfully!');
             }
-        } else {
-            // Flash an error message to the session if Facebook platform not selected
-            return redirect()->back()->with('error', 'Facebook platform not selected!');
         }
+
+        return redirect()->back()->with('error', 'Facebook platform not selected!');
     }
 }

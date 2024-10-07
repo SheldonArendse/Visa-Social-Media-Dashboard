@@ -55,14 +55,15 @@
                             </x-dropdown-link>
 
                             <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form action="{{ url('/facebook/post') }}" method="POST" id="dropzone-form" class="dropzone" enctype="multipart/form-data">
                                 @csrf
+                                <input type="text" name="content" placeholder="Your post content" required>
 
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
+                                <!-- Dropzone for file upload -->
+                                <div class="dropzone" id="file-dropzone"></div>
+
+                                <input type="checkbox" name="platforms[]" value="facebook"> Post to Facebook
+                                <button type="submit">Post</button>
                             </form>
                         </x-slot>
                     </x-dropdown>
@@ -92,72 +93,16 @@
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
 
                         <!-- Form to create a post -->
-                        <form action="{{ url('/facebook/post') }}" method="POST" id="article-form" enctype="multipart/form-data">
+                        <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-4">
-                                <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                                <textarea name="content" id="content" rows="5" class="mt-1 focus:ring-secondary focus:border-secondary block w-full shadow-sm sm:text-sm border-gray-400 rounded-md px-3 py-2" placeholder="What's on your mind?"></textarea>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Media Upload</label>
-                                <div id="media-dropzone" class="dropzone mt-1">
-                                    <div class="dz-message">
-                                        <i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>
-                                        <p>Drag and drop files here or click to upload</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Platform options -->
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Platforms</label>
-                                <div class="mt-2 space-y-2">
-                                    <div class="flex items-center">
-                                        <input id="facebook" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded" value="facebook">
-                                        <label for="facebook" class="ml-3 text-sm text-gray-700 flex items-center">
-                                            <i class="fab fa-facebook-square mr-2" style="color: #3b5998;"></i> Facebook
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="twitter" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="twitter" class="ml-3 text-sm text-gray-700 flex items-center">
-                                            <i class="fab fa-twitter mr-2" style="color: #1DA1F2;"></i> Twitter
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="instagram" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="instagram" class="ml-3 text-sm text-gray-700 flex items-center">
-                                            <i class="fab fa-instagram mr-2" style="color: #C13584;"></i> Instagram
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="linkedin" name="platforms[]" type="checkbox" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
-                                        <label for="linkedin" class="ml-3 text-sm text-gray-700 flex items-center">
-                                            <i class="fab fa-linkedin mr-2" style="color: #0A66C2;"></i> LinkedIn
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="schedule" class="block text-sm font-medium text-gray-700">Scheduled Post</label>
-                                <input type="text" name="schedule" id="schedule" class="sm:text-sm border-gray-300 rounded-md flatpickr-input" placeholder="yyyy-mm-dd / 00:00" data-input>
-                            </div>
-
-                            <div class="flex justify-between">
-                                <button type="button" id="schedule-post" class="bg-accent text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                                    Schedule Post
-                                </button>
-                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                                    Create Post
-                                </button>
-                            </div>
-
+                            <input type="text" name="content" placeholder="Your post content" required>
+                            <input type="file" name="file" accept="image/*" required>
+                            <input type="checkbox" name="platforms[]" value="facebook"> Post to Facebook
+                            <button type="submit">Post</button>
                         </form>
+
+
+
                     </div>
                 </div>
 
