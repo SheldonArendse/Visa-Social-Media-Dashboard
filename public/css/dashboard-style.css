@@ -67,6 +67,11 @@ body {
     border-radius: 5px;
 }
 
+#btn-post:hover {
+    background-color: #0d25fa;
+    transition: ease-in 0.2s;
+}
+
 /* Notification styles */
 .notification {
     position: absolute;

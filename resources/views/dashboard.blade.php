@@ -94,9 +94,41 @@
                             <!-- Existing media input for compatibility -->
                             <input type="file" name="file" accept="image/*" class="mb-4">
 
-                            <input type="checkbox" name="platforms[]" value="facebook" class="mb-4"> Post to Facebook
-                            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Post</button>
+                            <!-- Social Media Platforms Checkbox Options -->
+                            <div class="mt-4">
+                                <h3 class="text-lg leading-6 font-medium text-accent mb-2">Select Platforms</h3>
+
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-2">
+                                        <input id="facebook" name="platforms[]" type="checkbox" value="facebook" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <label for="facebook" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-facebook mr-2" style="color: #4267B2;"></i> Facebook
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <input id="instagram" name="platforms[]" type="checkbox" value="instagram" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <label for="instagram" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-instagram mr-2" style="color: #C13584;"></i> Instagram
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <input id="twitter" name="platforms[]" type="checkbox" value="twitter" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <label for="twitter" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-twitter mr-2" style="color: #1DA1F2;"></i> Twitter
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <input id="tiktok" name="platforms[]" type="checkbox" value="tiktok" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                                        <label for="tiktok" class="ml-3 text-sm text-gray-700 flex items-center">
+                                            <i class="fab fa-tiktok mr-2" style="color: #69C9D0;"></i> TikTok
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="bg-blue-500 text-white p-2 rounded" id="btn-post">Create Post</button>
                         </form>
+
                     </div>
                 </div>
 
