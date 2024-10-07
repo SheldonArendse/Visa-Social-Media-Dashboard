@@ -59,21 +59,22 @@
             </div>
         </header>
 
-        <!-- Main Content Area -->
+        <!-- Notifications -->
         @if(session('success'))
-        <div class="notification success" id="success-message">
+        <div class="notification success" id="success-message" style="display: none;">
             {{ session('success') }}
             <button class="close-btn" onclick="closeNotification('success-message')">&times;</button>
         </div>
         @endif
 
         @if(session('error'))
-        <div class="notification error" id="error-message">
+        <div class="notification error" id="error-message" style="display: none;">
             {{ session('error') }}
             <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
         </div>
         @endif
 
+        <!-- Main Content Area -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -84,15 +85,14 @@
                         <!-- Form to create a post -->
                         <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data" id="article-form">
                             @csrf
-                            <input type="text" name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4">
-
+                            <textarea name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4 resize-y h-24" id="content-section"></textarea>
                             <!-- Dropzone for file upload -->
                             <div class="dropzone" id="file-dropzone">
-                                <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
+                                <div class="dz-message" data-dz-message><span><i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>Drag and drop files here or click to upload</span></div>
                             </div>
 
                             <!-- Existing media input for compatibility -->
-                            <input type="file" name="file" accept="image/*" class="mb-4">
+                            <!-- <input type="file" name="file" accept="image/*" class="mb-4"> -->
 
                             <!-- Social Media Platforms Checkbox Options -->
                             <div class="mt-4">
@@ -204,9 +204,15 @@
                                 console.log("Post successful:", response);
                                 dz.removeAllFiles(); // Clear files from Dropzone after successful upload
                                 $('#article-form')[0].reset(); // Reset the form
+
+                                // Display success notification
+                                $('#success-message').text(response.message).show();
                             },
                             error: function(xhr, status, error) {
                                 console.error("Error posting:", error);
+
+                                // Display error notification
+                                $('#error-message').text(xhr.responseJSON.message || "An error occurred.").show();
                             }
                         });
                     } else {
@@ -220,13 +226,6 @@
                     console.error("Error uploading file:", errorMessage);
                 });
             }
-        });
-
-        // Initialize flatpickr for scheduled posts
-        flatpickr("#schedule", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today"
         });
 
         // Function to close notification manually
@@ -252,6 +251,7 @@
             }, 5000);
         }
     </script>
+
 
 </body>
 

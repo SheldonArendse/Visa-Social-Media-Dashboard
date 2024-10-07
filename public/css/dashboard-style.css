@@ -67,9 +67,16 @@ body {
     border-radius: 5px;
 }
 
+#content-section {
+    vertical-align: top; /* Ensure text starts at the top */
+    padding-top: 0.5rem; /* Adjust padding if needed */
+}
+
 #btn-post:hover {
-    background-color: #0d25fa;
-    transition: ease-in 0.2s;
+    background-color: #2238f8;
+    transition: ease-in-out 0.2s;
+    padding: 10px 15px;
+    font-weight: bold;
 }
 
 /* Notification styles */
