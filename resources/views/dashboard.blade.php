@@ -53,18 +53,6 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-
-                            <!-- Authentication -->
-                            <form action="{{ url('/facebook/post') }}" method="POST" id="dropzone-form" class="dropzone" enctype="multipart/form-data">
-                                @csrf
-                                <input type="text" name="content" placeholder="Your post content" required>
-
-                                <!-- Dropzone for file upload -->
-                                <div class="dropzone" id="file-dropzone"></div>
-
-                                <input type="checkbox" name="platforms[]" value="facebook"> Post to Facebook
-                                <button type="submit">Post</button>
-                            </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -85,6 +73,7 @@
             <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
         </div>
         @endif
+
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -93,16 +82,21 @@
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
 
                         <!-- Form to create a post -->
-                        <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data" id="article-form">
                             @csrf
-                            <input type="text" name="content" placeholder="Your post content" required>
-                            <input type="file" name="file" accept="image/*" required>
-                            <input type="checkbox" name="platforms[]" value="facebook"> Post to Facebook
-                            <button type="submit">Post</button>
+                            <input type="text" name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4">
+
+                            <!-- Dropzone for file upload -->
+                            <div class="dropzone" id="file-dropzone">
+                                <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
+                            </div>
+
+                            <!-- Existing media input for compatibility -->
+                            <input type="file" name="file" accept="image/*" class="mb-4">
+
+                            <input type="checkbox" name="platforms[]" value="facebook" class="mb-4"> Post to Facebook
+                            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Post</button>
                         </form>
-
-
-
                     </div>
                 </div>
 
@@ -146,8 +140,8 @@
         // Initialize Dropzone
         Dropzone.autoDiscover = false;
 
-        const dropzone = new Dropzone("#media-dropzone", {
-            url: "/file/post",
+        const dropzone = new Dropzone("#file-dropzone", {
+            url: "/facebook/post", // URL for posting
             autoProcessQueue: false,
             maxFiles: 1,
             acceptedFiles: "image/*",
@@ -155,27 +149,38 @@
             init: function() {
                 const dz = this;
 
-                // Event listener for when a file is added
-                dz.on("addedfile", function(file) {
-                    console.log("File added:", file);
-                });
-
                 // Handle form submission
                 document.querySelector("#article-form").addEventListener("submit", function(e) {
                     e.preventDefault(); // Prevent the default form submission
 
                     // Check if there's a file in the dropzone
                     if (dz.files.length > 0) {
-                        dz.processQueue(); // Manually process the queue
-                    } else {
-                        console.log("No file uploaded.");
-                    }
-                });
+                        // Submit form data
+                        const formData = new FormData(this);
+                        dz.files.forEach((file) => {
+                            formData.append('file', file); // Append the file from Dropzone
+                        });
 
-                // Event listener for processing the queue
-                dz.on("queuecomplete", function() {
-                    console.log("Upload complete!");
-                    dz.removeAllFiles(); // Clear files from Dropzone
+                        // Send the FormData containing the form inputs and file
+                        $.ajax({
+                            url: '/facebook/post', // URL for posting
+                            type: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                console.log("Post successful:", response);
+                                dz.removeAllFiles(); // Clear files from Dropzone after successful upload
+                                $('#article-form')[0].reset(); // Reset the form
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error posting:", error);
+                            }
+                        });
+                    } else {
+                        // Submit form without files
+                        this.submit();
+                    }
                 });
 
                 // Event listener for upload errors
@@ -184,51 +189,6 @@
                 });
             }
         });
-
-
-        // Handle form submission
-        $('#article-form').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            // Check if there are files in the Dropzone
-            if (dropzone.getQueuedFiles().length > 0) {
-                // Append the file from Dropzone to FormData
-                dropzone.getQueuedFiles().forEach((file) => {
-                    formData.append('file', file); // Assuming the file input name is 'file'
-                });
-
-                // Process the Dropzone queue
-                dropzone.processQueue(); // This uploads the file
-
-                // Send the FormData containing the form inputs and file
-                $.ajax({
-                    url: '/facebook/post', // URL for posting
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        console.log("Post successful:", response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error posting:", error);
-                    }
-                });
-            } else {
-                // Submit form without files
-                this.submit();
-            }
-        });
-
-
-        // Make sure Dropzone doesn't auto-submit the form
-        dropzone.on('complete', function() {
-            dropzone.removeAllFiles();
-            $('#article-form')[0].reset();
-        });
-
 
         // Initialize flatpickr for scheduled posts
         flatpickr("#schedule", {
