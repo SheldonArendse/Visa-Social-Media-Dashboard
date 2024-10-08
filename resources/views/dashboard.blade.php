@@ -93,8 +93,9 @@
 
                             <!-- Dropzone for file upload -->
                             <div class="dropzone" id="file-dropzone">
-                                <div class="dz-message" data-dz-message>
-                                    <span><i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>Drag and drop files here or click to upload</span>
+                                <div class="dz-message">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>
+                                    <p>Drag and drop files here or click to upload</p>
                                 </div>
                             </div>
 

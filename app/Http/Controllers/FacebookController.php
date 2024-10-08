@@ -34,7 +34,7 @@ class FacebookController extends Controller
 
             // Append the link to the content if it's provided
             if ($links) {
-                $content .= "\nClick on link for more info: " . $links; // Add the link to the content
+                $content .= "\nMore info: " . $links; // Add the link to the content
             }
 
             // Use your Page Access Token and Page ID
