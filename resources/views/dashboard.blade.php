@@ -86,18 +86,21 @@
                         <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data" id="article-form">
                             @csrf
                             <textarea name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4 resize-y h-24" id="content-section"></textarea>
+
+                            <!-- New Links/Website section -->
+                            <label for="links" class="block text-lg font-medium text-gray-700 mb-2">Links/Website</label>
+                            <input type="url" name="links" placeholder="Paste your clickable URL here" class="border rounded p-2 w-full mb-4" id="links" />
+
                             <!-- Dropzone for file upload -->
                             <div class="dropzone" id="file-dropzone">
-                                <div class="dz-message" data-dz-message><span><i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>Drag and drop files here or click to upload</span></div>
+                                <div class="dz-message" data-dz-message>
+                                    <span><i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-2"></i>Drag and drop files here or click to upload</span>
+                                </div>
                             </div>
-
-                            <!-- Existing media input for compatibility -->
-                            <!-- <input type="file" name="file" accept="image/*" class="mb-4"> -->
 
                             <!-- Social Media Platforms Checkbox Options -->
                             <div class="mt-4">
                                 <h3 class="text-lg leading-6 font-medium text-accent mb-2">Select Platforms</h3>
-
                                 <div class="flex flex-col">
                                     <div class="flex items-center mb-2">
                                         <input id="facebook" name="platforms[]" type="checkbox" value="facebook" class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
@@ -128,6 +131,7 @@
 
                             <button type="submit" class="bg-blue-500 text-white p-2 rounded" id="btn-post">Create Post</button>
                         </form>
+
 
                     </div>
                 </div>
