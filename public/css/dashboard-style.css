@@ -72,11 +72,16 @@ body {
     padding-top: 0.5rem; /* Adjust padding if needed */
 }
 
+#btn-post {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 #btn-post:hover {
     background-color: #2238f8;
     transition: ease-in-out 0.2s;
-    padding: 10px 15px;
     font-weight: bold;
+    transform: translateY(-4px);
 }
 
 /* Notification styles */
