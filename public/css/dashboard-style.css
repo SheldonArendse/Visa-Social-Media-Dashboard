@@ -72,11 +72,15 @@ body {
     padding-top: 0.5rem; /* Adjust padding if needed */
 }
 
+#btn-post {
+    margin-top: 20px;
+}
+
 #btn-post:hover {
     background-color: #2238f8;
-    transition: ease-in-out 0.2s;
-    padding: 10px 15px;
+    transform: translateY(-4px);
     font-weight: bold;
+    transition: ease-in 0.2s;
 }
 
 /* Notification styles */
