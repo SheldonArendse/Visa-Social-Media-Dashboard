@@ -60,19 +60,22 @@
         </header>
 
         <!-- Notifications -->
-        @if(session('success'))
-        <div class="notification success" id="success-message" style="display: none;">
+        @if (session('success'))
+        <div class="notification success">
             {{ session('success') }}
-            <button class="close-btn" onclick="closeNotification('success-message')">&times;</button>
+            <button class="close-btn" onclick="this.parentElement.style.display='none';">X</button>
         </div>
         @endif
 
-        @if(session('error'))
-        <div class="notification error" id="error-message" style="display: none;">
+        @if (session('error'))
+        <div class="notification error">
             {{ session('error') }}
-            <button class="close-btn" onclick="closeNotification('error-message')">&times;</button>
+            <button class="close-btn" onclick="this.parentElement.style.display='none';">X</button>
         </div>
         @endif
+
+        <div id="success-message" class="hidden bg-green-500 text-white p-2 pl-4 rounded mb-4">Posted Successfully!</div>
+        <div id="error-message" class="hidden bg-red-500 text-white p-2 pl-4 rounded mb-4">Post Failed</div>
 
         <!-- Main Content Area -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">

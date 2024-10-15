@@ -43,11 +43,9 @@ class FacebookService
             return json_decode($responseBody, true);
         } catch (\Exception $e) {
             Log::error('Error posting image to Facebook: ' . $e->getMessage());
-            return ['error' => 'Error posting image to Facebook: ' . $e->getMessage()];
+            return ['error' => ['message' => 'Error posting image to Facebook: ' . $e->getMessage()]];
         }
     }
-
-
 
     public function postMessageToFacebook($message, $accessToken, $pageId)
     {
