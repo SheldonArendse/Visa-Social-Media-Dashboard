@@ -183,8 +183,9 @@
         const dropzone = new Dropzone("#file-dropzone", {
             url: "/facebook/post", // URL for posting
             autoProcessQueue: false,
-            maxFiles: 1,
-            acceptedFiles: "image/*",
+            maxFiles: 1, // Limit to one file (either image or video)
+            acceptedFiles: "image/*,video/mp4,video/avi,video/quicktime", // Allow both image and video formats
+            maxFilesize: 100, // Max file size for video uploads in MB
             clickable: true,
             init: function() {
                 const dz = this;
@@ -193,12 +194,12 @@
                 document.querySelector("#article-form").addEventListener("submit", function(e) {
                     e.preventDefault(); // Prevent the default form submission
 
-                    // Check if there's a file in the dropzone
+                    // Check if there's a file in the Dropzone
                     if (dz.files.length > 0) {
-                        // Submit form data
+                        // Submit form data including the file
                         const formData = new FormData(this);
                         dz.files.forEach((file) => {
-                            formData.append('file', file); // Append the file from Dropzone
+                            formData.append('file', file); // Append the file from Dropzone (image or video)
                         });
 
                         // Send the FormData containing the form inputs and file
@@ -224,8 +225,30 @@
                             }
                         });
                     } else {
-                        // Submit form without files
-                        this.submit();
+                        // If no file, still send the form (for message-only posts)
+                        const formData = new FormData(this);
+
+                        // Send form data without a file
+                        $.ajax({
+                            url: '/facebook/post',
+                            type: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                console.log("Post successful:", response);
+                                $('#article-form')[0].reset(); // Reset the form
+
+                                // Display success notification
+                                $('#success-message').text(response.message).show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error posting:", error);
+
+                                // Display error notification
+                                $('#error-message').text(xhr.responseJSON.message || "An error occurred.").show();
+                            }
+                        });
                     }
                 });
 

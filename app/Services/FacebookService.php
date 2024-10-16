@@ -39,7 +39,7 @@ class FacebookService
             ]);
 
             $responseBody = $response->getBody()->getContents();
-            Log::info('Facebook API response: ' . $responseBody);
+            Log::info('Facebook API response (image): ' . $responseBody);
             return json_decode($responseBody, true);
         } catch (\Exception $e) {
             Log::error('Error posting image to Facebook: ' . $e->getMessage());
@@ -60,12 +60,45 @@ class FacebookService
             ]);
 
             $responseBody = $response->getBody()->getContents();
-            Log::info('Facebook API response: ' . $responseBody);
+            Log::info('Facebook API response (message): ' . $responseBody);
 
             return json_decode($responseBody, true);
         } catch (\Exception $e) {
             Log::error('Error posting message to Facebook: ' . $e->getMessage());
             return ['error' => ['message' => 'Failed to post message to Facebook']];
+        }
+    }
+
+    // New method to post a video to Facebook
+    public function postVideoToFacebook($message, $videoPath, $accessToken, $pageId)
+    {
+        $videoUrl = "https://graph.facebook.com/v20.0/{$pageId}/videos";
+
+        try {
+            $response = $this->client->post($videoUrl, [
+                'multipart' => [
+                    [
+                        'name'     => 'access_token',
+                        'contents' => $accessToken
+                    ],
+                    [
+                        'name'     => 'description',
+                        'contents' => $message
+                    ],
+                    [
+                        'name'     => 'file',
+                        'contents' => fopen(storage_path("app/public/{$videoPath}"), 'r'),
+                        'filename' => basename($videoPath)
+                    ]
+                ]
+            ]);
+
+            $responseBody = $response->getBody()->getContents();
+            Log::info('Facebook API response (video): ' . $responseBody);
+            return json_decode($responseBody, true);
+        } catch (\Exception $e) {
+            Log::error('Error posting video to Facebook: ' . $e->getMessage());
+            return ['error' => ['message' => 'Error posting video to Facebook: ' . $e->getMessage()]];
         }
     }
 }
