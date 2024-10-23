@@ -133,9 +133,18 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="bg-blue-500 text-white p-2 rounded" id="btn-post">Create Post</button>
-                        </form>
+                            <!-- New Schedule Post section -->
+                            <div class="mt-4">
+                                <label for="scheduled_time" class="block text-lg font-medium text-gray-700 mb-2">Schedule Time</label>
+                                <input type="datetime-local" name="scheduled_time" id="scheduled_time" required class="border rounded p-2 w-full mb-4" />
+                            </div>
 
+                            <!-- Buttons for creating and scheduling posts -->
+                            <div class="flex space-x-4">
+                                <button type="submit" class="bg-blue-500 text-white p-2 rounded" id="btn-post">Create Post</button>
+                                <button type="submit" class="bg-green-500 text-white p-2 rounded" id="btn-schedule" formaction="{{ url('/facebook/schedule') }}">Schedule Post</button>
+                            </div>
+                        </form>
 
                     </div>
                 </div>

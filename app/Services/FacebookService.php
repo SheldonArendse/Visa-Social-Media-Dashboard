@@ -101,4 +101,28 @@ class FacebookService
             return ['error' => ['message' => 'Error posting video to Facebook: ' . $e->getMessage()]];
         }
     }
+
+    public function schedulePostToFacebook($message, $accessToken, $pageId, $scheduledTime)
+    {
+        $postUrl = "https://graph.facebook.com/v20.0/{$pageId}/feed";
+
+        try {
+            $response = $this->client->post($postUrl, [
+                'form_params' => [
+                    'message' => $message,
+                    'access_token' => $accessToken,
+                    'scheduled_publish_time' => $scheduledTime, // Use Unix timestamp for scheduling
+                    'published' => false, // Set to false to schedule the post
+                ]
+            ]);
+
+            $responseBody = $response->getBody()->getContents();
+            Log::info('Facebook API response (scheduled post): ' . $responseBody);
+
+            return json_decode($responseBody, true);
+        } catch (\Exception $e) {
+            Log::error('Error scheduling post to Facebook: ' . $e->getMessage());
+            return ['error' => ['message' => 'Error scheduling post to Facebook: ' . $e->getMessage()]];
+        }
+    }
 }

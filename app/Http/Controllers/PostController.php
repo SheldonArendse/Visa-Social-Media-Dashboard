@@ -2,64 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Services\FacebookService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    public function store(Request $request)
+    protected $facebookService;
+
+    public function __construct(FacebookService $facebookService)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image_url' => 'nullable|url',
-            'article_url' => 'nullable|url',
-            'platforms' => 'required|array',
-            'platforms.*' => 'in:facebook,twitter,instagram,linkedin', // Ensure valid platforms
-        ]);
-
-        // Create a new post and save it to the database
-        $post = Post::create([
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-            'image_url' => $request->input('image_url'),
-            'article_url' => $request->input('article_url'),
-            // 'user_id' => auth()->id(), // Assuming the user is authenticated
-        ]);
-
-        // Post to the selected social media platforms
-        $platforms = $request->input('platforms');
-        foreach ($platforms as $platform) {
-            // Here, you'll call the methods that handle the actual posting
-            $this->postToSocialMedia($platform, $post);
-        }
-
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Post created and shared successfully!');
+        $this->facebookService = $facebookService;
     }
 
-    private function postToSocialMedia($platform, Post $post)
+    public function schedulePost(Request $request)
     {
-        // This is a placeholder method.
-        // You would implement the actual API calls for each platform here.
+        // Validate request
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:500',
+            'platforms' => 'required|array',
+            'platforms.*' => 'in:facebook', // You can add more platforms as needed
+            'scheduled_time' => 'required|date',
+            'image' => 'sometimes|image|max:2048', // Max 2MB for images
+            'video' => 'sometimes|mimetypes:video/mp4|max:100000' // Max 100MB for videos
+        ]);
 
-        switch ($platform) {
-            case 'facebook':
-                // Call Facebook API
-                break;
-            case 'twitter':
-                // Call Twitter API
-                break;
-            case 'instagram':
-                // Call Instagram API
-                break;
-            case 'linkedin':
-                // Call LinkedIn API
-                break;
-            default:
-                // Handle unexpected platforms
-                break;
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        $message = $request->input('content');
+        $platforms = $request->input('platforms');
+        $scheduledTime = strtotime($request->input('scheduled_time')); // Convert to Unix timestamp
+        $accessToken = 'EAAX...hG2H6'; // Your access token
+        $pageId = '1454933211739062'; // Your page ID
+
+        foreach ($platforms as $platform) {
+            if ($platform === 'facebook') {
+                // Check for image upload
+                if ($request->hasFile('image')) {
+                    $imagePath = $request->file('image')->store('uploads/images', 'public');
+                    $this->facebookService->schedulePostToFacebook($message, $accessToken, $pageId, $scheduledTime, $imagePath);
+                }
+
+                // Check for video upload
+                if ($request->hasFile('video')) {
+                    $videoPath = $request->file('video')->store('uploads/videos', 'public');
+                    $this->facebookService->postVideoToFacebook($message, $videoPath, $accessToken, $pageId);
+                }
+
+                // If no media is uploaded, just post the message
+                if (!$request->hasFile('image') && !$request->hasFile('video')) {
+                    $this->facebookService->postMessageToFacebook($message, $accessToken, $pageId);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Post has been scheduled successfully!');
     }
 }

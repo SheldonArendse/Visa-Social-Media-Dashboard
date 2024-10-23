@@ -8,7 +8,6 @@ use GuzzleHttp\Client;
 use App\Http\Controllers\FacebookController;
 use Illuminate\Support\Facades\Log;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -39,14 +38,8 @@ Route::middleware('auth')->group(function () {
 // Route to post to Facebook using Guzzle
 Route::post('/facebook/post', [FacebookController::class, 'postToFacebook'])->middleware('auth');
 
+// Facebook OAuth Login route
 Route::middleware('auth')->group(function () {
-
-    // Profile management routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Facebook OAuth Login route
     Route::get('/login/facebook', function () {
         $fbOAuthUrl = 'https://www.facebook.com/v20.0/dialog/oauth';
         $params = [
@@ -90,40 +83,8 @@ Route::middleware('auth')->group(function () {
         return redirect('/dashboard')->with('status', 'Facebook connected successfully!');
     });
 
-    // Route to post to Facebook using Guzzle
-    Route::post('/post-to-facebook', function (Request $request) {
-        $accessToken = session('fb_access_token');
-
-        if (!$accessToken) {
-            return redirect()->route('facebook.login');
-        }
-
-        // Prepare the data for the Facebook post
-        $data = [
-            'message' => $request->input('message'),
-            'link' => $request->input('link'), // Optional link
-        ];
-
-        // Use Guzzle to post to the Facebook Graph API
-        $client = new Client();
-        try {
-            // Post to Facebook page feed (replace {page-id} with the Facebook Page ID)
-            $response = $client->post('https://graph.facebook.com/v20.0/412442358622297/feed', [
-                'form_params' => $data + [
-                    'access_token' => $accessToken,
-                ],
-            ]);
-
-            return redirect('/dashboard')->with('status', 'Posted successfully to Facebook!');
-        } catch (\Exception $e) {
-            return 'Error: ' . $e->getMessage();
-        }
-    })->name('post.facebook');
-
-    Route::get('/facebook/redirect', [FacebookController::class, 'redirectToFacebook'])->name('facebook.redirect');
-    Route::get('/facebook/callback', [FacebookController::class, 'handleCallback'])->name('facebook.callback');
     // Route for posting to Facebook
-    Route::post('/facebook/post', [FacebookController::class, 'postToFacebook']);
+    Route::post('/facebook/schedule', [PostController::class, 'schedulePost'])->name('facebook.schedule');
 });
 
 require __DIR__ . '/auth.php';
