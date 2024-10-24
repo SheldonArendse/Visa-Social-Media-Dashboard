@@ -34,8 +34,8 @@ class PostController extends Controller
         $message = $request->input('content');
         $platforms = $request->input('platforms');
         $scheduledTime = strtotime($request->input('scheduled_time')); // Convert to Unix timestamp
-        $accessToken = 'EAAX...hG2H6'; // Your access token
-        $pageId = '1454933211739062'; // Your page ID
+        $accessToken = 'EAAUrQQlB87YBO6V8pRt7kfXhyhx47cj3usOOAzbzMdelwp4rYExKlAcZAfi443E57ifnnWZCFG01Uf9qzLQVeHwGQRQPSEEDRL9TgPwO0fqLp8mUnTEGyKRryTZBhaQ8ZCMkwZBuAI4TWLVkUvC0J6ZCdmdFarl3LI4ur4fPY6IURv6aMKH2svQntWTJcW7xrI';
+        $pageId = '1454933211739062';
 
         foreach ($platforms as $platform) {
             if ($platform === 'facebook') {

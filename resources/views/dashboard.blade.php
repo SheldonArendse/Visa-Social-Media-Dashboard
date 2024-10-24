@@ -136,7 +136,7 @@
                             <!-- New Schedule Post section -->
                             <div class="mt-4">
                                 <label for="scheduled_time" class="block text-lg font-medium text-gray-700 mb-2">Schedule Time</label>
-                                <input type="datetime-local" name="scheduled_time" id="scheduled_time" required class="border rounded p-2 w-full mb-4" />
+                                <input type="datetime-local" name="scheduled_time" id="scheduled_time" class="border rounded p-2 w-full mb-4" />
                             </div>
 
                             <!-- Buttons for creating and scheduling posts -->
