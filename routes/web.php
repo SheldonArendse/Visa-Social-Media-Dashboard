@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\TwitterController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Http\Controllers\FacebookController;
 use Illuminate\Support\Facades\Log;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,36 +17,34 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// Route for the analytics page
 Route::get('/analytics', function () {
     return view('analytics');
 })->name('analytics');
 
-// Route for the articles page
+// Middleware to check if user is authenticated
 Route::middleware('auth')->group(function () {
+
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Articles route
     Route::get('/articles', function () {
         return view('articles');
     })->name('articles');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route for posting to Facebook
+    Route::post('/facebook/post', [FacebookController::class, 'postToFacebook']);
 
-    // Verify that user is logged in before posting
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
-});
+    // Route for posting to Twitter
+    Route::post('/twitter/post', [TwitterController::class, 'postToTwitter'])->name('twitter.post');
+    // Route::post('/twitter/post', [TwitterController::class, 'postToTwitter']);
 
-// Route to post to Facebook using Guzzle
-Route::post('/facebook/post', [FacebookController::class, 'postToFacebook'])->middleware('auth');
+    // Multi-platform post route
+    Route::post('/social-media/post', [PostController::class, 'postToSocialMedia'])->name('socialMedia.post');
 
-Route::middleware('auth')->group(function () {
-
-    // Profile management routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Facebook OAuth Login route
+    // Facebook OAuth routes
     Route::get('/login/facebook', function () {
         $fbOAuthUrl = 'https://www.facebook.com/v20.0/dialog/oauth';
         $params = [
@@ -55,17 +53,13 @@ Route::middleware('auth')->group(function () {
             'scope' => 'pages_manage_posts',
             'response_type' => 'code',
         ];
-
         $loginUrl = $fbOAuthUrl . '?' . http_build_query($params);
-
         return redirect()->away($loginUrl);
     })->name('facebook.login');
 
-    // Facebook OAuth Callback route
     Route::get('/facebook/callback', function (Request $request) {
         Log::info('Facebook callback received', $request->all());
         $code = $request->get('code');
-
         if (!$code) {
             return 'Error: Unable to get authorization code';
         }
@@ -84,46 +78,36 @@ Route::middleware('auth')->group(function () {
         $data = json_decode($response->getBody()->getContents(), true);
         $accessToken = $data['access_token'];
 
-        // Store access token in session for future use
+        // Store access token in session
         session(['fb_access_token' => $accessToken]);
 
         return redirect('/dashboard')->with('status', 'Facebook connected successfully!');
     });
 
-    // Route to post to Facebook using Guzzle
+    // Route to post to Facebook after OAuth
     Route::post('/post-to-facebook', function (Request $request) {
         $accessToken = session('fb_access_token');
-
         if (!$accessToken) {
             return redirect()->route('facebook.login');
         }
 
-        // Prepare the data for the Facebook post
         $data = [
             'message' => $request->input('message'),
             'link' => $request->input('link'), // Optional link
         ];
 
-        // Use Guzzle to post to the Facebook Graph API
         $client = new Client();
         try {
-            // Post to Facebook page feed (replace {page-id} with the Facebook Page ID)
-            $response = $client->post('https://graph.facebook.com/v20.0/412442358622297/feed', [
+            $response = $client->post('https://graph.facebook.com/v20.0/{page-id}/feed', [
                 'form_params' => $data + [
                     'access_token' => $accessToken,
                 ],
             ]);
-
             return redirect('/dashboard')->with('status', 'Posted successfully to Facebook!');
         } catch (\Exception $e) {
             return 'Error: ' . $e->getMessage();
         }
     })->name('post.facebook');
-
-    Route::get('/facebook/redirect', [FacebookController::class, 'redirectToFacebook'])->name('facebook.redirect');
-    Route::get('/facebook/callback', [FacebookController::class, 'handleCallback'])->name('facebook.callback');
-    // Route for posting to Facebook
-    Route::post('/facebook/post', [FacebookController::class, 'postToFacebook']);
 });
 
 require __DIR__ . '/auth.php';

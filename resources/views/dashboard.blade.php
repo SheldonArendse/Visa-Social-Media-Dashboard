@@ -86,7 +86,7 @@
                         <h2 class="text-lg leading-6 font-medium text-accent mb-4">Create New Article</h2>
 
                         <!-- Form to create a post -->
-                        <form action="{{ url('/facebook/post') }}" method="POST" enctype="multipart/form-data" id="article-form">
+                        <form action="{{ url('/twitter/post') }}" method="POST" enctype="multipart/form-data" id="article-form">
                             @csrf
                             <textarea name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4 resize-y h-24" id="content-section"></textarea>
 
