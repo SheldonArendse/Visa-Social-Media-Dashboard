@@ -181,7 +181,7 @@
         Dropzone.autoDiscover = false;
 
         const dropzone = new Dropzone("#file-dropzone", {
-            url: "/facebook/post", // URL for posting
+            url: "/twitter/post", // URL for posting
             autoProcessQueue: false,
             maxFiles: 1, // Limit to one file (either image or video)
             acceptedFiles: "image/*,video/mp4,video/avi,video/quicktime", // Allow both image and video formats
@@ -204,7 +204,7 @@
 
                         // Send the FormData containing the form inputs and file
                         $.ajax({
-                            url: '/facebook/post', // URL for posting
+                            url: '/twitter/post', // URL for posting
                             type: 'POST',
                             data: formData,
                             contentType: false,
@@ -230,7 +230,7 @@
 
                         // Send form data without a file
                         $.ajax({
-                            url: '/facebook/post',
+                            url: '/twitter/post',
                             type: 'POST',
                             data: formData,
                             contentType: false,

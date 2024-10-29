@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\TwitterService;
+use Illuminate\Http\Request;
+
 
 class TwitterController extends Controller
 {
@@ -17,11 +18,17 @@ class TwitterController extends Controller
     public function postToTwitter(Request $request)
     {
         $request->validate([
-            'message' => 'required|string|max:280',
+            'content' => 'required|string|max:280',
+            // 'image' => 'nullable|image|max:2048', 
         ]);
 
-        $result = $this->twitterService->postTweet($request->input('message'));
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads', 'public');
+        }
 
-        return response()->json($result);
+        $response = $this->twitterService->postTweet($request->content, $imagePath);
+
+        return response()->json($response);
     }
 }

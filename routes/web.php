@@ -38,8 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/facebook/post', [FacebookController::class, 'postToFacebook']);
 
     // Route for posting to Twitter
-    Route::post('/twitter/post', [TwitterController::class, 'postToTwitter'])->name('twitter.post');
-    // Route::post('/twitter/post', [TwitterController::class, 'postToTwitter']);
+    // Route::post('/twitter/post', [TwitterController::class, 'postToTwitter'])->name('twitter.post');
+    Route::post('/twitter/post', [TwitterController::class, 'postToTwitter']);
 
     // Multi-platform post route
     Route::post('/social-media/post', [PostController::class, 'postToSocialMedia'])->name('socialMedia.post');

@@ -11,22 +11,20 @@ class PostController extends Controller
     protected $facebookService;
     protected $twitterService;
 
-    public function __construct(FacebookService $facebookService, TwitterService $twitterService)
-    {
-        $this->facebookService = $facebookService;
-        $this->twitterService = $twitterService;
-    }
-
     public function postToSocialMedia(Request $request)
     {
         // Post to Facebook if selected
         if ($request->has('facebook')) {
-            // Your existing Facebook posting logic
+            // Add Facebook posting logic here
         }
 
         // Post to Twitter if selected
         if ($request->has('twitter')) {
-            return $this->twitterService->postTweet($request);
+            $content = $request->input('content');
+            // $imagePath = $request->hasFile('image') ? $request->file('image')->store('uploads', 'public') : null;
+            $response = $this->twitterService->postTweet($content);
+
+            return response()->json($response);
         }
 
         return redirect()->back()->with('error', 'No platform selected for posting.');
