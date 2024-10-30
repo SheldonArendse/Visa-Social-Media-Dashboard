@@ -24,9 +24,7 @@ class TwitterController extends Controller
         $imagePath = null;
         if ($request->hasFile('file')) {
             // Store the file in the specified path
-            $imagePath = $request->file('file')->store('uploads', 'public'); // Ensure 'uploads' matches your desired directory
-            // Make sure you are referencing the correct path later
-            // $imagePath = public_path('storage/' . $imagePath);
+            $imagePath = $request->file('file')->store('uploads', 'public');
         }
 
         $response = $this->twitterService->postTweet($request->input('content'), $imagePath);
