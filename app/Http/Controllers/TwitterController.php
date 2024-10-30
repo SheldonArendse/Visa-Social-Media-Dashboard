@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\TwitterService;
 use Illuminate\Http\Request;
 
-
 class TwitterController extends Controller
 {
     protected $twitterService;
@@ -19,15 +18,18 @@ class TwitterController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:280',
-            // 'image' => 'nullable|image|max:2048', 
+            'file' => 'nullable|image|max:2048',
         ]);
 
         $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('uploads', 'public');
+        if ($request->hasFile('file')) {
+            // Store the file in the specified path
+            $imagePath = $request->file('file')->store('uploads', 'public'); // Ensure 'uploads' matches your desired directory
+            // Make sure you are referencing the correct path later
+            // $imagePath = public_path('storage/' . $imagePath);
         }
 
-        $response = $this->twitterService->postTweet($request->content, $imagePath);
+        $response = $this->twitterService->postTweet($request->input('content'), $imagePath);
 
         return response()->json($response);
     }
