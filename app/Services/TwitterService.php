@@ -97,7 +97,7 @@ class TwitterService
         $url = 'https://upload.twitter.com/1.1/media/upload.json';
 
         try {
-            // Step 1: INIT the upload
+            // Step 1: INIT the upload - provides meta data
             $initResponse = $this->mediaClient->post($url, [
                 'form_params' => [
                     'command' => 'INIT',
@@ -109,6 +109,7 @@ class TwitterService
             $mediaId = json_decode($initResponse->getBody(), true)['media_id_string'];
 
             // Step 2: APPEND the media
+            // Loops through each segment and apprends it to the upload
             $segmentIndex = 0;
             $file = fopen($filePath, 'r');
             while (!feof($file)) {
@@ -125,7 +126,7 @@ class TwitterService
             }
             fclose($file);
 
-            // Step 3: FINALIZE the upload
+            // Step 3: FINALIZE the upload - Tells Twitter to start uploading the video
             $finalizeResponse = $this->mediaClient->post($url, [
                 'form_params' => [
                     'command' => 'FINALIZE',
@@ -137,6 +138,7 @@ class TwitterService
             Log::info('Chunked media upload response: ' . json_encode($finalizeData));
 
             // Step 4: Check processing status
+            // Monitors the upload status (pending, in_progress or succeeded)
             $checkAfterSecs = $finalizeData['processing_info']['check_after_secs'] ?? 1;
             do {
                 sleep($checkAfterSecs);
