@@ -18,16 +18,16 @@ class TwitterController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:280',
-            'file' => 'nullable|image|max:2048',
+            'file' => 'nullable|file|mimetypes:image/jpeg,image/png,video/mp4|max:51200', // Allow videos as well
         ]);
 
-        $imagePath = null;
+        $filePath = null;
         if ($request->hasFile('file')) {
             // Store the file in the specified path
-            $imagePath = $request->file('file')->store('uploads', 'public');
+            $filePath = $request->file('file')->store('uploads', 'public');
         }
 
-        $response = $this->twitterService->postTweet($request->input('content'), $imagePath);
+        $response = $this->twitterService->postTweet($request->input('content'), $filePath);
 
         return response()->json($response);
     }

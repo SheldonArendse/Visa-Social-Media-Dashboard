@@ -15,7 +15,6 @@ class TwitterService
 
     public function __construct(Client $client)
     {
-        // Set up OAuth 1.0a
         $stack = HandlerStack::create();
         $oauth = new Oauth1([
             'consumer_key'    => env('TWITTER_CONSUMER_KEY'),
@@ -27,33 +26,30 @@ class TwitterService
         $stack->push($oauth);
 
         $this->client = new Client([
-            'base_uri' => 'https://api.twitter.com/2/', // v2 base URI
+            'base_uri' => 'https://api.twitter.com/2/',
             'handler' => $stack,
             'auth' => 'oauth',
         ]);
 
         $this->mediaClient = new Client([
-            'base_uri' => 'https://upload.twitter.com/1.1/', // v1.1 base URI for media
+            'base_uri' => 'https://upload.twitter.com/1.1/',
             'handler' => $stack,
             'auth' => 'oauth',
         ]);
     }
 
-    public function postTweet($message, $imagePath = null)
+    public function postTweet($message, $filePath = null)
     {
-        // If an image path is provided, upload the media first
         $mediaId = null;
-        if ($imagePath) {
-            $mediaId = $this->uploadMedia($imagePath);
+        if ($filePath) {
+            $mediaId = $this->uploadMedia($filePath);
         }
 
-        // Prepare data for the tweet
         $data = [
             'text' => $message,
             'media' => $mediaId ? ['media_ids' => [$mediaId]] : null,
         ];
 
-        // Remove null values
         $data = array_filter($data);
 
         try {
@@ -72,22 +68,97 @@ class TwitterService
         }
     }
 
-    private function uploadMedia($imagePath)
+    private function uploadMedia($filePath)
     {
-        $url = 'media/upload.json';
+        $filePath = storage_path("app/public/{$filePath}");
+        $fileMimeType = mime_content_type($filePath);
+        $url = 'https://upload.twitter.com/1.1/media/upload.json';
+
         try {
-            $response = $this->mediaClient->post($url, [
-                'multipart' => [
-                    [
-                        'name' => 'media',
-                        'contents' => fopen(storage_path("app/public/{$imagePath}"), 'r'),
-                    ]
+            if (str_starts_with($fileMimeType, 'video/')) {
+                return $this->chunkedMediaUpload($filePath, 'tweet_video');
+            } else {
+                $response = $this->mediaClient->post($url, [
+                    'multipart' => [
+                        ['name' => 'media', 'contents' => fopen($filePath, 'r')],
+                    ],
+                ]);
+                return json_decode($response->getBody(), true)['media_id_string'];
+            }
+        } catch (RequestException $e) {
+            Log::error('Media upload failed: ' . $e->getMessage());
+            throw new \Exception('Media upload failed: ' . $e->getMessage());
+        }
+    }
+
+    private function chunkedMediaUpload($filePath, $mediaCategory)
+    {
+        $totalBytes = filesize($filePath);
+        $url = 'https://upload.twitter.com/1.1/media/upload.json';
+
+        try {
+            // Step 1: INIT the upload
+            $initResponse = $this->mediaClient->post($url, [
+                'form_params' => [
+                    'command' => 'INIT',
+                    'media_type' => 'video/mp4',
+                    'total_bytes' => $totalBytes,
+                    'media_category' => $mediaCategory,
+                ],
+            ]);
+            $mediaId = json_decode($initResponse->getBody(), true)['media_id_string'];
+
+            // Step 2: APPEND the media
+            $segmentIndex = 0;
+            $file = fopen($filePath, 'r');
+            while (!feof($file)) {
+                $chunk = fread($file, 5 * 1024 * 1024);
+                $this->mediaClient->post($url, [
+                    'multipart' => [
+                        ['name' => 'command', 'contents' => 'APPEND'],
+                        ['name' => 'media_id', 'contents' => $mediaId],
+                        ['name' => 'segment_index', 'contents' => $segmentIndex],
+                        ['name' => 'media', 'contents' => $chunk],
+                    ],
+                ]);
+                $segmentIndex++;
+            }
+            fclose($file);
+
+            // Step 3: FINALIZE the upload
+            $finalizeResponse = $this->mediaClient->post($url, [
+                'form_params' => [
+                    'command' => 'FINALIZE',
+                    'media_id' => $mediaId,
                 ],
             ]);
 
-            $mediaResponse = json_decode($response->getBody(), true);
-            Log::info('Media upload response: ' . json_encode($mediaResponse));
-            return $mediaResponse['media_id_string'];
+            $finalizeData = json_decode($finalizeResponse->getBody(), true);
+            Log::info('Chunked media upload response: ' . json_encode($finalizeData));
+
+            // Step 4: Check processing status
+            $checkAfterSecs = $finalizeData['processing_info']['check_after_secs'] ?? 1;
+            do {
+                sleep($checkAfterSecs);
+
+                $statusResponse = $this->mediaClient->get($url, [
+                    'query' => [
+                        'command' => 'STATUS',
+                        'media_id' => $mediaId,
+                    ],
+                ]);
+
+                $statusData = json_decode($statusResponse->getBody(), true);
+                $processingState = $statusData['processing_info']['state'] ?? 'succeeded';
+
+                if ($processingState === 'succeeded') {
+                    return $mediaId;
+                } elseif ($processingState === 'failed') {
+                    throw new \Exception('Media processing failed: ' . json_encode($statusData));
+                }
+
+                $checkAfterSecs = $statusData['processing_info']['check_after_secs'] ?? 1;
+            } while ($processingState === 'pending' || $processingState === 'in_progress');
         } catch (RequestException $e) {
             Log::error('Media upload failed: ' . $e->getMessage());
             throw new \Exception('Media upload failed: ' . $e->getMessage());
