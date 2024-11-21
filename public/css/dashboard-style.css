@@ -135,6 +135,15 @@ body {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.dropzone .dz-remove {
+    color: red !important; /* Change the text color to red */
+    cursor: pointer; /* Add a pointer cursor for interactivity */
+}
+
+.dropzone .dz-remove:hover {
+    text-decoration: underline; /* Optional: Add underline on hover */
+}
+
 
 @media (max-width: 640px) {
     .sidebar {
