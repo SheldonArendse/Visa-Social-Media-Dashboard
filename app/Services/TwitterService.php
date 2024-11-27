@@ -50,12 +50,15 @@ class TwitterService
             'media' => $mediaId ? ['media_ids' => [$mediaId]] : null,
         ];
 
-        $data = array_filter($data);
-
         try {
             $response = $this->client->post('tweets', [
-                'json' => $data,
+                'json' => array_filter($data),
             ]);
+
+            // Check for rate limit headers
+            $rateLimitReset = $response->getHeader('x-rate-limit-reset')[0];
+            $resetTime = \Carbon\Carbon::createFromTimestamp($rateLimitReset);
+            Log::info('Rate limit will reset at: ' . $resetTime->toDateTimeString());
 
             return json_decode($response->getBody(), true);
         } catch (RequestException $e) {
@@ -67,6 +70,7 @@ class TwitterService
             ];
         }
     }
+
 
     private function uploadMedia($filePath)
     {

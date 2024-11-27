@@ -144,6 +144,23 @@ body {
     text-decoration: underline; /* Optional: Add underline on hover */
 }
 
+/* Adjust Dropzone preview container to handle videos and images */
+.dropzone .dz-preview .dz-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+
+/* Ensure the video fills the container without stretching */
+.dropzone .dz-preview .dz-image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops to fit without distortion */
+}
 
 @media (max-width: 640px) {
     .sidebar {

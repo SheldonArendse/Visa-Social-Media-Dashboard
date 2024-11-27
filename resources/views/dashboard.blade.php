@@ -181,103 +181,67 @@
         Dropzone.autoDiscover = false;
 
         const dropzone = new Dropzone("#file-dropzone", {
-            url: "/twitter/post", // URL for posting
+            url: "/twitter/post",
             autoProcessQueue: false,
-            maxFiles: 1, // Limit to one file (either image or video)
-            acceptedFiles: "image/*,video/mp4,video/avi,video/quicktime", // Allow both image and video formats
-            maxFilesize: 100, // Max file size for video uploads in MB
+            maxFiles: 1,
+            acceptedFiles: "image/*,video/mp4,video/avi,video/quicktime",
+            maxFilesize: 100, // Limit in MB
             clickable: true,
-            addRemoveLinks: true, // Enable remove button
-            dictRemoveFile: "Remove Media", // Customize remove button text
+            addRemoveLinks: true,
+            dictRemoveFile: "Remove Media",
             init: function() {
                 const dz = this;
 
-                // Handle form submission
-                document.querySelector("#article-form").addEventListener("submit", function(e) {
-                    e.preventDefault(); // Prevent the default form submission
+                // Override the thumbnail function for video previews
+                dz.on("addedfile", function(file) {
+                    if (file.type.startsWith("video/")) {
+                        const video = document.createElement("video");
+                        video.src = URL.createObjectURL(file);
+                        video.style.width = "100%";
+                        video.style.height = "100%";
+                        video.controls = true;
+                        video.autoplay = true;
+                        video.loop = true;
+                        video.muted = true; // Mute the video for preview
 
-                    // Check if there's a file in the Dropzone
-                    if (dz.files.length > 0) {
-                        const formData = new FormData(this);
-                        dz.files.forEach((file) => {
-                            formData.append("file", file); // Append the file from Dropzone (image or video)
-                        });
-
-                        // Send the FormData containing the form inputs and file
-                        $.ajax({
-                            url: "/twitter/post", // URL for posting
-                            type: "POST",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(response) {
-                                console.log("Post successful:", response);
-                                dz.removeAllFiles(); // Clear files from Dropzone after successful upload
-                                $("#article-form")[0].reset(); // Reset the form
-
-                                // Display success notification
-                                $("#success-message").text(response.message).show();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error posting:", error);
-
-                                // Display error notification
-                                $("#error-message").text(xhr.responseJSON.message || "An error occurred.").show();
-                            },
-                        });
-                    } else {
-                        // If no file, still send the form (for message-only posts)
-                        const formData = new FormData(this);
-
-                        // Send form data without a file
-                        $.ajax({
-                            url: "/twitter/post",
-                            type: "POST",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(response) {
-                                console.log("Post successful:", response);
-                                $("#article-form")[0].reset(); // Reset the form
-
-                                // Display success notification
-                                $("#success-message").text(response.message).show();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error posting:", error);
-
-                                // Display error notification
-                                $("#error-message").text(xhr.responseJSON.message || "An error occurred.").show();
-                            },
-                        });
+                        const thumbnailElement = file.previewElement.querySelector(".dz-image");
+                        if (thumbnailElement) {
+                            thumbnailElement.innerHTML = ""; // Clear existing thumbnail content
+                            thumbnailElement.appendChild(video); // Append video element as the thumbnail
+                        }
                     }
                 });
 
-                // Event listener for removing files
-                dz.on("removedfile", function(file) {
-                    console.log("Removed file:", file.name);
+                // Form submission handling
+                document.querySelector("#article-form").addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
 
-                    // Optional: Send an AJAX request to remove the file from the server if it's already uploaded
-                    // $.ajax({
-                    //     url: "/twitter/remove-media",
-                    //     type: "POST",
-                    //     data: { fileName: file.name },
-                    //     success: function (response) {
-                    //         console.log("File removed from server:", response);
-                    //     },
-                    //     error: function (xhr, status, error) {
-                    //         console.error("Error removing file from server:", error);
-                    //     },
-                    // });
-                });
+                    // If a file is uploaded, append it to formData
+                    if (dz.files.length > 0) {
+                        dz.files.forEach(file => formData.append("file", file));
+                    }
 
-                // Event listener for upload errors
-                dz.on("error", function(file, errorMessage) {
-                    console.error("Error uploading file:", errorMessage);
+                    $.ajax({
+                        url: "/twitter/post",
+                        type: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            console.log("Post successful:", response);
+                            dz.removeAllFiles();
+                            $("#article-form")[0].reset();
+                            $("#success-message").text(response.message).show();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error posting:", error);
+                            $("#error-message").text(xhr.responseJSON?.message || "An error occurred.").show();
+                        }
+                    });
                 });
-            },
+            }
         });
-
 
         // Function to close notification manually
         function closeNotification(id) {
