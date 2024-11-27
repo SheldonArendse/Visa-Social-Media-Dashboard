@@ -162,6 +162,22 @@ body {
     object-fit: cover; /* Crops to fit without distortion */
 }
 
+/* Hide or modify the white bar on the image preview */
+.dz-preview .dz-details {
+    background: none; /* Removes any background that might cause the white bar */
+}
+
+.dz-preview .dz-filename {
+    position: absolute; /* Ensure the file name is not covered */
+    bottom: 5px; /* Adjust positioning if necessary */
+    left: 10px;
+    color: black; /* Ensure the filename text is visible */
+}
+
+.dz-progress {
+    display: none;
+}
+
 @media (max-width: 640px) {
     .sidebar {
         position: fixed;

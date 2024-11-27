@@ -243,6 +243,7 @@
             }
         });
 
+
         // Function to close notification manually
         function closeNotification(id) {
             const notification = document.getElementById(id);
