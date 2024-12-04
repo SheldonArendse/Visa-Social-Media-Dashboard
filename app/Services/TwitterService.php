@@ -15,6 +15,7 @@ class TwitterService
 
     public function __construct(Client $client)
     {
+        // Handler stack for OAuth 1.0 authentication 
         $stack = HandlerStack::create();
         $oauth = new Oauth1([
             'consumer_key'    => env('TWITTER_CONSUMER_KEY'),
@@ -25,12 +26,14 @@ class TwitterService
         ]);
         $stack->push($oauth);
 
+        // Client used to interact with the Twitter API (messages)
         $this->client = new Client([
             'base_uri' => 'https://api.twitter.com/2/',
             'handler' => $stack,
             'auth' => 'oauth',
         ]);
 
+        // Client created for media uploads (media)
         $this->mediaClient = new Client([
             'base_uri' => 'https://upload.twitter.com/1.1/',
             'handler' => $stack,
@@ -46,8 +49,8 @@ class TwitterService
         }
 
         $data = [
-            'text' => $message,
-            'media' => $mediaId ? ['media_ids' => [$mediaId]] : null,
+            'text' => $message, // Message field needs to be added to post to Twitter
+            'media' => $mediaId ? ['media_ids' => [$mediaId]] : null, // Attach media only if upload is available
         ];
 
         try {
@@ -75,7 +78,7 @@ class TwitterService
     private function uploadMedia($filePath)
     {
         $filePath = storage_path("app/public/{$filePath}");
-        $fileMimeType = mime_content_type($filePath);
+        $fileMimeType = mime_content_type($filePath); // Determine the file type (image/video)
         $url = 'https://upload.twitter.com/1.1/media/upload.json';
 
         try {
@@ -145,7 +148,7 @@ class TwitterService
             // Monitors the upload status (pending, in_progress or succeeded)
             $checkAfterSecs = $finalizeData['processing_info']['check_after_secs'] ?? 1;
             do {
-                sleep($checkAfterSecs);
+                sleep($checkAfterSecs); // Wait a bit before checking status
 
                 $statusResponse = $this->mediaClient->get($url, [
                     'query' => [
@@ -158,7 +161,7 @@ class TwitterService
                 $processingState = $statusData['processing_info']['state'] ?? 'succeeded';
 
                 if ($processingState === 'succeeded') {
-                    return $mediaId;
+                    return $mediaId; // Successful upload
                 } elseif ($processingState === 'failed') {
                     throw new \Exception('Media processing failed: ' . json_encode($statusData));
                 }

@@ -9,6 +9,7 @@ class TwitterController extends Controller
 {
     protected $twitterService;
 
+    // Constructor to inject the TwitterService dependency
     public function __construct(TwitterService $twitterService)
     {
         $this->twitterService = $twitterService;
@@ -27,8 +28,10 @@ class TwitterController extends Controller
             $filePath = $request->file('file')->store('uploads', 'public');
         }
 
+        // Call TwitterService to post the tweet with the content and optional media
         $response = $this->twitterService->postTweet($request->input('content'), $filePath);
 
+        // Return the API response as JSON
         return response()->json($response);
     }
 }
