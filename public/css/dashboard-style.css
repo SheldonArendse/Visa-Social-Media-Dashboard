@@ -136,12 +136,12 @@ body {
 }
 
 .dropzone .dz-remove {
-    color: red !important; /* Change the text color to red */
-    cursor: pointer; /* Add a pointer cursor for interactivity */
+    color: red !important;
+    cursor: pointer; 
 }
 
 .dropzone .dz-remove:hover {
-    text-decoration: underline; /* Optional: Add underline on hover */
+    text-decoration: underline;
 }
 
 /* Adjust Dropzone preview container to handle videos and images */
@@ -159,19 +159,19 @@ body {
 .dropzone .dz-preview .dz-image video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Crops to fit without distortion */
+    object-fit: cover;
 }
 
 /* Hide or modify the white bar on the image preview */
 .dz-preview .dz-details {
-    background: none; /* Removes any background that might cause the white bar */
+    background: none; 
 }
 
 .dz-preview .dz-filename {
     position: absolute; /* Ensure the file name is not covered */
-    bottom: 5px; /* Adjust positioning if necessary */
+    bottom: 5px;
     left: 12px;
-    color: black; /* Ensure the filename text is visible */
+    color: black;
 }
 
 .dz-progress {
