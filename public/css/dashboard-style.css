@@ -68,8 +68,8 @@ body {
 }
 
 #content-section {
-    vertical-align: top; /* Ensure text starts at the top */
-    padding-top: 0.5rem; /* Adjust padding if needed */
+    vertical-align: top;
+    padding-top: 0.5rem; 
 }
 
 #btn-post {
