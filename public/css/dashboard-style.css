@@ -170,7 +170,7 @@ body {
 .dz-preview .dz-filename {
     position: absolute; /* Ensure the file name is not covered */
     bottom: 5px; /* Adjust positioning if necessary */
-    left: 10px;
+    left: 12px;
     color: black; /* Ensure the filename text is visible */
 }
 

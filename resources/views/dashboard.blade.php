@@ -91,8 +91,8 @@
                             <textarea name="content" placeholder="Your post content" required class="border rounded p-2 w-full mb-4 resize-y h-24" id="content-section"></textarea>
 
                             <!-- New Links/Website section -->
-                            <label for="links" class="block text-lg font-medium text-gray-700 mb-2">Links/Website</label>
-                            <input type="url" name="links" placeholder="Paste your clickable URL here" class="border rounded p-2 w-full mb-4" id="links" />
+                            <!-- <label for="links" class="block text-lg font-medium text-gray-700 mb-2">Links/Website</label>
+                            <input type="url" name="links" placeholder="Paste your clickable URL here" class="border rounded p-2 w-full mb-4" id="links" /> -->
 
                             <!-- Dropzone for file upload -->
                             <div class="dropzone" id="file-dropzone">
@@ -183,7 +183,7 @@
         const dropzone = new Dropzone("#file-dropzone", {
             url: "/twitter/post",
             autoProcessQueue: false,
-            maxFiles: 1,
+            maxFiles: 2,
             acceptedFiles: "image/*,video/mp4,video/avi,video/quicktime",
             maxFilesize: 100, // Limit in MB
             clickable: true,
